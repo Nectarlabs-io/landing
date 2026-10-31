@@ -1,3 +1,4 @@
+import { attachDatabasePool } from "@vercel/functions";
 import { Pool } from "pg";
 
 import { errorCode, logEvent } from "./log";
@@ -12,13 +13,18 @@ export function getPool(connectionString: string): Pool {
       connectionString,
       max: 5,
       connectionTimeoutMillis: 5_000,
-      idleTimeoutMillis: 30_000,
+      // Short, because on Vercel attachDatabasePool keeps the instance alive
+      // this long after a client is released, then closes idle clients.
+      idleTimeoutMillis: 10_000,
     });
     // An idle client can error (e.g. the database restarts). Without a
     // listener that would crash the process.
     pool.on("error", (error) => {
       logEvent("db_pool_error", { level: "error", code: errorCode(error) });
     });
+    // Releases idle clients before a Vercel function suspends (Fluid compute).
+    // Outside Vercel's runtime it does nothing.
+    attachDatabasePool(pool);
     pools.set(connectionString, pool);
   }
   return pool;

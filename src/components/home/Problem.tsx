@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 import { CellGrid } from "@/components/ui/CellGrid";
+import { visiblePage } from "@/lib/content/load";
 import { SectionHeading } from "@/components/ui/Typography";
 
 import styles from "./home.module.css";
@@ -45,6 +48,11 @@ export function Problem() {
           </div>
         ))}
       </CellGrid>
+      {visiblePage("/research") && (
+        <p className={styles.footnote}>
+          <Link href="/research">How these figures were measured, with sources →</Link>
+        </p>
+      )}
     </Section>
   );
 }

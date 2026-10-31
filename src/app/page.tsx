@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { Collateral } from "@/components/home/Collateral";
 import { ClosingCta } from "@/components/home/ClosingCta";
 import { Hero } from "@/components/home/Hero";
@@ -10,13 +8,14 @@ import { Products } from "@/components/home/Products";
 import { Protocols } from "@/components/home/Protocols";
 import { Security } from "@/components/home/Security";
 import { WhoItsFor } from "@/components/home/WhoItsFor";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { graphFor } from "@/lib/seo/jsonld";
+import { metadataFor } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: { absolute: "Nectar — The buyer behind every loan" },
-};
+export const metadata = metadataFor("/");
 
 export default function HomePage() {
   return (
@@ -36,6 +35,7 @@ export default function HomePage() {
         <ClosingCta />
       </main>
       <SiteFooter />
+      <JsonLd data={graphFor("/")} />
     </>
   );
 }

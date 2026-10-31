@@ -1,20 +1,19 @@
-import type { Metadata } from "next";
-
 import styles from "@/components/contact/Contact.module.css";
 import { PilotForm } from "@/components/contact/PilotForm";
+import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { MiniFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Card } from "@/components/ui/Card";
 import { Eyebrow, Kicker } from "@/components/ui/Typography";
+import { visiblePage } from "@/lib/content/load";
 import { cx } from "@/lib/cx";
+import { graphFor } from "@/lib/seo/jsonld";
+import { metadataFor } from "@/lib/seo/metadata";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: { absolute: "Talk to us — Nectar pilot cohort" },
-  description:
-    "Join the Nectar pilot cohort. Tell us what you're building and what you need: curators, lending protocols, buyers and builders.",
-};
+export const metadata = metadataFor("/contact");
 
 const NEXT_STEPS = [
   { title: "We reply by email.", text: "A real person, not a sequence." },
@@ -36,6 +35,7 @@ export default function ContactPage() {
       <main className={cx(styles.main, "dotted-grid")}>
         <div className={styles.inner}>
           <div className={styles.intro}>
+            <Breadcrumbs pathname="/contact" />
             <Eyebrow tone="accent" className="rise">
               TALK TO US
             </Eyebrow>
@@ -50,7 +50,7 @@ export default function ContactPage() {
 
           <div className={styles.columns}>
             <div className={styles.formColumn}>
-              <PilotForm />
+              <PilotForm privacyHref={visiblePage("/privacy")?.path} />
             </div>
 
             <aside aria-label="About the pilot" className={styles.aside}>
@@ -75,12 +75,16 @@ export default function ContactPage() {
                 <a href={`mailto:${site.contactEmail}`} className={styles.directLink}>
                   {site.contactEmail}
                 </a>
+                <a href={site.xUrl} className={styles.directLink}>
+                  Nectar on X
+                </a>
               </Card>
             </aside>
           </div>
         </div>
       </main>
       <MiniFooter />
+      <JsonLd data={graphFor("/contact")} />
     </>
   );
 }

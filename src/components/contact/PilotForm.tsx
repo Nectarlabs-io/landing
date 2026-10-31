@@ -52,7 +52,7 @@ function errorMessage(code: PilotErrorCode | null, serverMessage?: string): Reac
   }
 }
 
-export function PilotForm() {
+export function PilotForm({ privacyHref }: { privacyHref?: string }) {
   const [values, setValues] = useState<PilotRequest>(EMPTY_PILOT_REQUEST);
   const [status, setStatus] = useState<Status>("editing");
   const [error, setError] = useState<ReactNode>(null);
@@ -310,6 +310,12 @@ export function PilotForm() {
       <div className={styles.formFooter}>
         <span className={styles.privacy}>
           We use this only to reply about the pilot. No newsletter.
+          {privacyHref && (
+            <>
+              {" "}
+              <a href={privacyHref}>How we handle your details</a>.
+            </>
+          )}
         </span>
         <Button type="submit" size="lg" disabled={status === "sending"}>
           {status === "sending" ? "Sending…" : "Send"}

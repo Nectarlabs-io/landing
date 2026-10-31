@@ -17,14 +17,15 @@ export function testDatabaseUrl(): string {
 export async function resetDatabase(url: string): Promise<void> {
   const client = new pg.Client({ connectionString: url });
   await client.connect();
-  await client.query("DROP TABLE IF EXISTS pilot_requests, schema_migrations");
+  await client.query("DROP TABLE IF EXISTS pilot_requests, indexnow_submissions, schema_migrations");
   await client.end();
   runScript("scripts/migrate.mjs", url);
 }
 
 export function runScript(script: string, databaseUrl: string, args: string[] = []): string {
   return execFileSync(process.execPath, [script, ...args], {
-    env: { ...process.env, DATABASE_URL: databaseUrl },
+    // Only DATABASE_URL, so a developer's MIGRATION_DATABASE_URL can't leak in.
+    env: { ...process.env, DATABASE_URL: databaseUrl, MIGRATION_DATABASE_URL: "", DATABASE_URL_UNPOOLED: "" },
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });

@@ -1,3 +1,5 @@
+import { execFileSync } from "node:child_process";
+
 import pg from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -19,6 +21,14 @@ afterAll(async () => {
 describe("scripts/migrate.mjs", () => {
   it("is idempotent", () => {
     expect(runScript("scripts/migrate.mjs", DB_URL)).toContain("up to date");
+  });
+
+  it("with --skip-if-unset, exits 0 when no database URL is set (first Vercel build)", () => {
+    const env = { ...process.env, DATABASE_URL: "", DATABASE_URL_UNPOOLED: "", MIGRATION_DATABASE_URL: "" };
+    const run = (args: string[]) =>
+      execFileSync(process.execPath, ["scripts/migrate.mjs", ...args], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+    expect(run(["--skip-if-unset"])).toContain("skipped");
+    expect(() => run([])).toThrow();
   });
 
   it("exits non-zero when the database is unreachable (so the deploy stops)", () => {

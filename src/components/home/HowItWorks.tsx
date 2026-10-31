@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 import { SectionHeading } from "@/components/ui/Typography";
+import { visiblePage } from "@/lib/content/load";
 
 import { ArchitectureDiagram } from "./ArchitectureDiagram";
 import styles from "./home.module.css";
@@ -16,6 +19,12 @@ export function HowItWorks() {
       <ArchitectureDiagram />
       <p className={styles.footnote}>
         Every part of this flow is in development. Pilot partners see it first.
+        {visiblePage("/how-it-works") && (
+          <>
+            {" "}
+            <Link href="/how-it-works">Read the full walkthrough →</Link>
+          </>
+        )}
       </p>
     </Section>
   );

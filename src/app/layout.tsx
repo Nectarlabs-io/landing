@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Mono, Syne } from "next/font/google";
 
 import { DEFAULT_THEME, themeInitScript } from "@/components/theme/theme-store";
+import { siteIsIndexable } from "@/lib/seo/indexing";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -19,20 +20,38 @@ const syne = Syne({
   display: "swap",
 });
 
+// Search engine verification codes, read at build time (see README).
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+const bingVerification = process.env.BING_SITE_VERIFICATION?.trim();
+
+/*
+ * Site-wide defaults. Every page sets its own title, description, canonical
+ * and social cards from its front matter (src/lib/seo/metadata.ts).
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: {
-    default: "Nectar — The buyer behind every loan",
-    template: "%s — Nectar",
+  title: { default: site.name, template: `%s | ${site.name}` },
+  description: site.definition,
+  applicationName: site.name,
+  robots: siteIsIndexable()
+    ? {
+        index: true,
+        follow: true,
+        // Let search and AI features quote and preview as much as they need.
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-snippet": -1,
+          "max-image-preview": "large",
+          "max-video-preview": -1,
+        },
+      }
+    : { index: false, follow: false },
+  verification: {
+    ...(googleVerification ? { google: googleVerification } : {}),
+    ...(bingVerification ? { other: { "msvalidate.01": bingVerification } } : {}),
   },
-  description: site.description,
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    title: "Nectar — The buyer behind every loan",
-    description: site.description,
-    url: site.url,
-  },
+  openGraph: { type: "website", siteName: site.name, locale: "en_US" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 
 /**
- * The client's IP. Railway's edge sets X-Real-IP; X-Forwarded-For is a
- * fallback for other proxies and local runs.
+ * The client's IP. Vercel sets X-Real-IP (identical to X-Forwarded-For) and
+ * overwrites both, so a client can't spoof them; Railway's edge also sets
+ * X-Real-IP. X-Forwarded-For is a fallback for other proxies and local runs.
  */
 export function clientIp(headers: Headers): string {
   const realIp = headers.get("x-real-ip")?.trim();

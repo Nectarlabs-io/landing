@@ -57,9 +57,11 @@ handle, so only the files should come across, not the copy. The brand facts it s
 1. **Before:** approve and publish `/media-kit` (or decide where it should go), copy the media-kit
    files, and set the production variables (README → Environment variables). Deploy production and
    check it on its `*.vercel.app` URL: pages, the form (row in Neon + email), `/api/health`.
-2. **Move the domain.** In the new project: Settings → Domains → add `nectarnetwork.fun`. Vercel
-   offers to move it from nectar-frontend; accept. Add `www.nectarnetwork.fun` too (the app
-   redirects it to the apex with a 301). This switches the live site.
+2. **Move the domain.** In the **nectar-landing** project: Settings → Domains → add
+   `nectarnetwork.fun`. Vercel offers to move it from nectar-frontend; accept. Add
+   `www.nectarnetwork.fun` too (the app redirects it to the apex with a 301). This switches the
+   live site. Deployment Protection on nectar-landing covers everything except custom domains, so
+   the domain is public while `*.vercel.app` URLs still ask for a Vercel login.
 3. **Check** (from any machine):
 
    ```bash

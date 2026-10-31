@@ -34,6 +34,17 @@
   color: var(--dim);
 }
 
+/* Links inside a line of text are underlined, not told apart by colour alone. */
+.footnote a {
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.footnote a:hover {
+  text-decoration-color: currentColor;
+}
+
 .hex {
   color: var(--accent);
 }

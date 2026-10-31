@@ -163,16 +163,24 @@ email variables, requests are stored but not emailed.
 builds, then `next build`) and a daily cron job for `/api/indexnow`. Cron jobs run on production
 deployments only.
 
-1. **Git access.** The Vercel GitHub app needs access to this repository.
-2. **Project.** Import the repo (framework: Next.js; the build command comes from `vercel.json`).
-3. **Database.** Storage → Create Database → Neon (Marketplace) → connect it to the project. This
+The project is **nectar-landing** (team "kunal's projects"). It is not linked to Git: the Vercel
+GitHub app has no access to the Nectarlabs-io org, so deployments are created through the Vercel
+API from the public repo (`gitSource`: Nectarlabs-io/landing at a branch or commit), and a push
+does **not** deploy on its own. To deploy a new commit, create a deployment from it (Vercel API or
+connector, or `vercel deploy` from a checkout). Installing the Vercel GitHub app on Nectarlabs-io
+and connecting the repo would turn on deploy-on-push. Vercel treats the repo's default branch as
+production.
+
+1. **Project.** Created with framework Next.js; the build command comes from `vercel.json`.
+   `PILOT_NOTIFY_TO` (production and preview) and `SITE_NOINDEX` / `CONTENT_PREVIEW` (preview) are
+   already set.
+2. **Database.** Storage → Create Database → Neon (Marketplace) → connect it to the project. This
    adds `DATABASE_URL`, `DATABASE_URL_UNPOOLED` and related variables.
-4. **Variables.** Add `IP_HASH_SALT`, `RESEND_API_KEY`, `PILOT_FROM`, `PILOT_NOTIFY_TO` and
-   `CRON_SECRET` as sensitive variables. For the Preview environment add `SITE_NOINDEX=true` and
-   `CONTENT_PREVIEW=1` so drafts can be reviewed on preview URLs.
-5. **Redeploy** production so the migrations run, then submit the form on the production
+3. **Variables.** Add `IP_HASH_SALT`, `RESEND_API_KEY`, `PILOT_FROM` and `CRON_SECRET` as
+   sensitive production variables (and `IP_HASH_SALT` for preview, with a different value).
+4. **Redeploy** production so the migrations run, then submit the form on the production
    `*.vercel.app` URL and check the row in Neon and the email.
-6. **Domain.** See [docs/cutover.md](docs/cutover.md): `nectarnetwork.fun` is currently attached to
+5. **Domain.** See [docs/cutover.md](docs/cutover.md): `nectarnetwork.fun` is currently attached to
    another Vercel project, and moving it switches the live site.
 
 ### Email (Resend)

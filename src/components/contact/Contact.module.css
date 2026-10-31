@@ -183,6 +183,17 @@
   color: var(--dim);
 }
 
+/* Links inside a line of text are underlined, not told apart by colour alone. */
+.privacy a {
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.privacy a:hover {
+  text-decoration-color: currentColor;
+}
+
 /* Success --------------------------------------------------------------- */
 
 .success {

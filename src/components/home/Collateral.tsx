@@ -19,14 +19,9 @@ const CLASSES = [
     problem: "One thin Pendle pool until maturity",
   },
   {
-    name: "Tokenized stocks",
-    venues: "Aave V4 Equities Hub, Morpho, Kamino",
-    problem: "Weekend price gaps, issuer pauses",
-  },
-  {
-    name: "Credit and RWA tokens",
-    venues: "Aave V4, Morpho, Blend",
-    problem: "Redemption queues, sometimes cross-chain",
+    name: "Tokenized real-world assets",
+    venues: "Aave V4, Morpho, Kamino, Blend",
+    problem: "Market hours, issuer pauses, redemption queues",
   },
   {
     name: "LSTs and LRTs",

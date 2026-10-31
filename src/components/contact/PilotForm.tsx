@@ -136,8 +136,8 @@ export function PilotForm({ privacyHref }: { privacyHref?: string }) {
           Thanks, {firstName}. We&apos;ve got it.
         </h2>
         <p className={cx(styles.successText, "rise")} style={{ animationDelay: "0.1s" }}>
-          We&apos;ll reply to {values.email.trim()} to set up a short call. For curators and
-          protocols, the next step is a depth study of the markets you named.
+          We&apos;ll reply to {values.email.trim()} to set up a short call. For lenders, curators
+          and apps, the next step is a depth study of the assets you named.
         </p>
         <dl className={cx(styles.summary, "rise")} style={{ animationDelay: "0.2s" }}>
           <dt>Role</dt>
@@ -263,7 +263,7 @@ export function PilotForm({ privacyHref }: { privacyHref?: string }) {
         </div>
         <div className={form.field}>
           <label htmlFor="c-size" className={form.label}>
-            Capacity you&apos;d want covered <span>(optional)</span>
+            Size involved <span>(optional)</span>
           </label>
           <select id="c-size" className={form.control} {...bind("capacity")}>
             {CAPACITY_OPTIONS.map((option) => (

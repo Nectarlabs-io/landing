@@ -12,10 +12,10 @@ import styles from "./home.module.css";
 import { Section } from "./Section";
 
 const PERKS = [
-  { title: "Designated keepers", text: "Bonded keepers assigned to your markets" },
-  { title: "A depth study", text: "How much a DEX can absorb, before anyone quotes capacity" },
-  { title: "A say in the Feed", text: "How committed bids get counted" },
-  { title: "Early access", text: "Feed, Route, Exits and Launch Cover as they open" },
+  { title: "Commitment fees", text: "For buyers who commit size behind a market" },
+  { title: "Higher limits", text: "For lenders and apps, backed by those buyers" },
+  { title: "A depth study", text: "How much a DEX can absorb, before anyone counts it" },
+  { title: "A say in the rules", text: "Haircuts, notice periods and how bids get counted" },
 ];
 
 const ART_ALT =
@@ -31,8 +31,8 @@ export function Pilot() {
         <Eyebrow tone="accent">PILOT COHORT</Eyebrow>
         <SectionTitle id="pilot-h">Running with a small cohort first.</SectionTitle>
         <p className={styles.lead}>
-          We&apos;re onboarding a few curators, lending protocols and buyers before anything opens
-          to the public. Here&apos;s what pilot partners get.
+          We&apos;re onboarding a few buyers, lenders and apps whose borrowers want higher limits,
+          before anything opens to the public. Here&apos;s what pilot partners get.
         </p>
         <ul className={styles.perks}>
           {PERKS.map((perk) => (

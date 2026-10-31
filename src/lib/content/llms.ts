@@ -29,7 +29,7 @@ function header(): string[] {
     "",
     `> ${site.definition}`,
     "",
-    `${site.name} is in development: nothing is available to use yet, and a small pilot cohort of curators, lending protocols and buyers comes first. Contact: ${site.contactEmail}.`,
+    `${site.name} is in development: nothing is available to use yet, and a small pilot cohort of buyers, lenders and apps comes first. Contact: ${site.contactEmail}.`,
     "",
   ];
 }

@@ -3,17 +3,24 @@
  * (client) and POST /api/pilot (server). Keep this module free of Node APIs.
  */
 
+// The roles the form offers, in the design's order (Oct 31). The database also
+// allows legacy ids (see LEGACY_ROLE_LABELS) so rows stored earlier stay valid.
 export const PILOT_ROLES = [
-  { id: "curator", label: "Curator or risk manager" },
+  { id: "app", label: "App, broker or agent with borrowers" },
+  { id: "lender", label: "Lender or curator" },
+  { id: "buyer", label: "Buyer, market maker or prop AMM" },
   { id: "protocol", label: "Lending protocol" },
-  { id: "buyer", label: "Buyer or market maker" },
-  { id: "issuer", label: "Collateral issuer" },
-  { id: "app", label: "Automation or looping app" },
+  { id: "issuer", label: "Asset issuer" },
   { id: "keeper", label: "Keeper operator" },
   { id: "other", label: "Something else" },
 ] as const;
 
 export type PilotRole = (typeof PILOT_ROLES)[number]["id"];
+
+/** Ids no longer offered, kept so earlier rows still read sensibly in email and export. */
+export const LEGACY_ROLE_LABELS: Record<string, string> = {
+  curator: "Curator or risk manager",
+};
 
 export const CAPACITY_OPTIONS = [
   { value: "", label: "Not sure yet" },
@@ -108,8 +115,9 @@ export function describeMissing(missing: string[]): string {
   return `Add ${list} so we can reply.`;
 }
 
-export function roleLabel(role: PilotRole | null): string {
-  return PILOT_ROLES.find((option) => option.id === role)?.label ?? "—";
+export function roleLabel(role: string | null): string {
+  if (role == null) return "—";
+  return PILOT_ROLES.find((option) => option.id === role)?.label ?? LEGACY_ROLE_LABELS[role] ?? role;
 }
 
 export type ValidationResult =
@@ -151,7 +159,7 @@ export function validatePilotRequest(body: unknown): ValidationResult {
   const capacityInput = input.capacity ?? "";
   const capacity = CAPACITY_OPTIONS.find((option) => option.value === capacityInput)?.value;
   if (capacity === undefined) {
-    return { ok: false, error: "Pick one of the listed capacity ranges." };
+    return { ok: false, error: "Pick one of the listed sizes." };
   }
 
   const data: PilotRequest = {

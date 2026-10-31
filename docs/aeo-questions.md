@@ -8,7 +8,7 @@ Pages marked *(draft)* aren't published yet; until they are, expect no citations
 
 | # | Question | Page that answers it in its first paragraph |
 | --- | --- | --- |
-| 1 | What is Nectar Network? | `/` (home) · `/about` *(draft)* · `/faq` *(draft)* |
+| 1 | What is Nectar Network? | `/` (home) · `/about` *(draft)* · `/faq` *(draft)* · `/media-kit` |
 | 2 | Is Nectar Network live? | `/faq` *(draft)* |
 | 3 | Who provides liquidation backstops for DeFi lending markets? | `/how-it-works` *(draft)* |
 | 4 | How do curators size caps when DEX liquidity is thin? | `/learn/dex-depth-and-collateral-caps` *(draft)* |
@@ -29,6 +29,9 @@ Pages marked *(draft)* aren't published yet; until they are, expect no citations
 | 19 | How do I join the Nectar Network pilot? | `/contact` · `/faq` *(draft)* |
 | 20 | What supply caps make sense for principal token collateral? | `/learn/principal-token-collateral` *(draft)* |
 | 21 | What is a redemption queue and why does it matter for liquidations? | `/learn/glossary#redemption-queue` *(draft)* |
+| 22 | How can a lending market lend more against tokenized assets safely? | `/learn/what-is-an-exit-backed-borrowing-limit` *(draft)* · `/` (home, Borrowing limits section) |
+| 23 | What is an exit-backed borrowing limit? | `/learn/what-is-an-exit-backed-borrowing-limit` *(draft)* |
+| 24 | Who pays for higher borrowing limits on tokenized assets? | `/faq#who-pays` *(draft)* · `/learn/committed-quotes-notice-periods-and-commitment-fees` *(draft)* |
 
 ## How to log results
 
@@ -39,6 +42,7 @@ A spreadsheet with one row per (date, assistant, question) is enough.
 ## Keyword hypotheses to check in Search Console
 
 These have no search-volume data behind them; check impressions and queries after launch:
-"Nectar Network", "liquidation infrastructure", "DeFi liquidation backstop", "collateral exit
+"Nectar Network", "credit and liquidity for tokenized assets", "tokenized asset lending",
+"borrowing limits backed by buyers", "liquidation infrastructure", "DeFi liquidation backstop", "collateral exit
 capacity", "DeFi bad debt", "supply caps for illiquid collateral", "principal token collateral
 liquidation", "keeper network", "funded liquidation quotes".

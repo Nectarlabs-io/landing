@@ -45,7 +45,8 @@ function founder(): Person {
     "@type": "Person",
     "@id": FOUNDER_ID,
     name: site.founderName,
-    ...(about ? { url: absoluteUrl(about.path) } : {}),
+    // Role and profiles are shown on /about, so they're marked up only once it's visible.
+    ...(about ? { url: absoluteUrl(about.path), jobTitle: site.founderRole, sameAs: [...site.founderLinks] } : {}),
   };
 }
 

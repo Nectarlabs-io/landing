@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import { allPages } from "@/lib/content/load";
@@ -14,9 +17,17 @@ const published = pages.filter((p) => p.status === "published");
 
 const CHAIN_NAMES =
   /\b(stellar|soroban|arc|base|sui|starknet|ethereum|monad|plasma|robinhood chain|evm|xlm)\b/i;
-const BANNED_PHRASES = /exit liquidity|guaranteed|testnet/i;
+const BANNED_PHRASES = /exit liquidity|guaranteed|testnet|stock/i;
+// Internal codenames: only Pappus and Macaulay are public protocol names.
+const CODENAMES = /cram[eé]r|avellaneda/i;
+// Lines from before the Oct 31 repositioning.
+const OLD_LINES =
+  /Exit infrastructure for global credit|Curators pay for capacity|Two protocols underneath|house buyer vault|exit infrastructure for lending markets/i;
 // "[N]", "[CONTACT EMAIL]" and the like; markdown links such as [X](...) are fine.
 const PLACEHOLDER = /\[[A-Z][A-Z0-9 _-]*\](?!\()/;
+
+/** A link to a file in /public (it has an extension), rather than to a page. */
+const isFile = (link: string) => /\.[a-z0-9]+$/i.test(link);
 
 function everyText(page: ContentPage): string {
   return [page.title, page.metaTitle, page.description, page.markdown].filter(Boolean).join("\n");
@@ -53,6 +64,8 @@ describe("content wording", () => {
     const text = everyText(page);
     expect(text.match(CHAIN_NAMES)?.[0] ?? null).toBeNull();
     expect(text.match(BANNED_PHRASES)?.[0] ?? null).toBeNull();
+    expect(text.match(CODENAMES)?.[0] ?? null).toBeNull();
+    expect(text.match(OLD_LINES)?.[0] ?? null).toBeNull();
   });
 
   it.each(pages.map((p) => [p.path, p]))("%s makes no live-product claim", (_, page) => {
@@ -73,21 +86,21 @@ describe("content structure", () => {
     for (const page of published) expect(page.reviewNotes, page.path).toEqual([]);
   });
 
-  it("internal links point at pages or routes that exist", () => {
+  it("internal links point at pages, routes or files that exist", () => {
     const known = new Set([...pages.map((p) => p.path), "/contact"]);
     for (const page of pages) {
       for (const link of page.internalLinks) {
-        const isAsset = /^\/brand\//.test(link);
-        expect(isAsset || known.has(link), `${page.path} → ${link}`).toBe(true);
+        const ok = isFile(link) ? existsSync(path.join("public", link)) : known.has(link);
+        expect(ok, `${page.path} → ${link}`).toBe(true);
       }
     }
   });
 
   it("published pages link only to published pages", () => {
-    const live = new Set([...published.map((p) => p.path), "/contact"]);
+    const shipped = new Set([...published.map((p) => p.path), "/contact"]);
     for (const page of published) {
       for (const link of page.internalLinks) {
-        if (!/^\/brand\//.test(link)) expect(live.has(link), `${page.path} → ${link}`).toBe(true);
+        if (!isFile(link)) expect(shipped.has(link), `${page.path} → ${link}`).toBe(true);
       }
     }
   });
@@ -121,6 +134,13 @@ describe("content structure", () => {
     const glossary = pages.find((p) => p.type === "glossary");
     const terms = glossary!.sections.map((s) => s.heading.toLowerCase());
     for (const term of [
+      "borrowing limit",
+      "recoverable value",
+      "haircut",
+      "notice period",
+      "commitment fee",
+      "rate premium",
+      "prop amm",
       "lltv",
       "liquidation bonus",
       "supply cap",

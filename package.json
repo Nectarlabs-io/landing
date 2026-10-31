@@ -14,7 +14,6 @@
     "export:pilot": "node --env-file-if-exists=.env.local scripts/export-pilot.mjs"
   },
   "dependencies": {
-    "@vercel/functions": "^3.10.5",
     "hast-util-to-html": "^9.0.6",
     "mdast-util-to-string": "^4.0.0",
     "next": "16.4.3",

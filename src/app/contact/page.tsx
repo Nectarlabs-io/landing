@@ -43,8 +43,9 @@ export default function ContactPage() {
               Join the pilot cohort.
             </h1>
             <p className={cx(styles.lead, "rise")} style={{ animationDelay: "0.2s" }}>
-              We&apos;re running a small, hands-on pilot with curators, lending protocols and
-              buyers. Tell us what you&apos;re building and what you need.
+              We&apos;re running a small, hands-on pilot with buyers, lenders, curators and apps
+              whose borrowers want higher limits. Tell us what you&apos;re building and what you
+              need.
             </p>
           </div>
 

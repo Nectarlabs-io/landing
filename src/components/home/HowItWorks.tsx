@@ -14,7 +14,7 @@ export function HowItWorks() {
         id="how-h"
         eyebrow="HOW IT WORKS"
         title="Every position closes through the route that can absorb it."
-        lead="Keepers flag the position. The router checks DEX depth. If it's too thin, Pappus settles against a buyer's funded quote in one transaction, and the Feed publishes how much capacity is committed."
+        lead="Buyers commit USDC in escrow before the storm, and lending markets count those quotes when they set limits. When a position goes bad, keepers flag it and the router checks depth. If the pool is too thin, Pappus settles against committed quotes in one transaction, with Nectar Reserve filling last."
       />
       <ArchitectureDiagram />
       <p className={styles.footnote}>

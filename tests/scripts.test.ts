@@ -1,4 +1,7 @@
-import { execFileSync } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
+import { createServer } from "node:http";
+import type { AddressInfo } from "node:net";
+import { promisify } from "node:util";
 
 import pg from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -23,12 +26,11 @@ describe("scripts/migrate.mjs", () => {
     expect(runScript("scripts/migrate.mjs", DB_URL)).toContain("up to date");
   });
 
-  it("with --skip-if-unset, exits 0 when no database URL is set (first Vercel build)", () => {
-    const env = { ...process.env, DATABASE_URL: "", DATABASE_URL_UNPOOLED: "", MIGRATION_DATABASE_URL: "" };
-    const run = (args: string[]) =>
-      execFileSync(process.execPath, ["scripts/migrate.mjs", ...args], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
-    expect(run(["--skip-if-unset"])).toContain("skipped");
-    expect(() => run([])).toThrow();
+  it("exits non-zero when no database URL is set", () => {
+    const env = { ...process.env, DATABASE_URL: "", MIGRATION_DATABASE_URL: "" };
+    expect(() =>
+      execFileSync(process.execPath, ["scripts/migrate.mjs"], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }),
+    ).toThrow();
   });
 
   it("exits non-zero when the database is unreachable (so the deploy stops)", () => {
@@ -76,6 +78,12 @@ describe("scripts/migrate.mjs", () => {
       ),
     ).rejects.toThrow(/check constraint/);
   });
+
+  it("allows the new lender role and keeps legacy curator rows valid (migration 003)", async () => {
+    await db.query(`INSERT INTO pilot_requests (role, name, email, organisation) VALUES ('lender', 'a', 'a@b.c', 'o')`);
+    await db.query(`INSERT INTO pilot_requests (role, name, email, organisation) VALUES ('curator', 'a', 'a@b.c', 'o')`);
+    await db.query(`DELETE FROM pilot_requests WHERE name = 'a'`);
+  });
 });
 
 describe("npm run export:pilot", () => {
@@ -95,5 +103,51 @@ line two')`,
     expect(record).toContain(`"'=HYPERLINK(""http://x"")"`);
     expect(record).toContain('"Engines, Ltd"');
     expect(record).toContain('"line one\nline two"');
+  });
+});
+
+describe("scripts/indexnow-cron.mjs", () => {
+  const run = promisify(execFile);
+
+  it("calls the web service with the bearer secret and exits 0 on success", async () => {
+    let auth: string | undefined;
+    const server = createServer((req, res) => {
+      auth = req.headers.authorization;
+      res.setHeader("content-type", "application/json");
+      res.end(JSON.stringify({ ok: true, outcome: "disabled", count: 0 }));
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const { port } = server.address() as AddressInfo;
+    try {
+      const { stdout } = await run(process.execPath, ["scripts/indexnow-cron.mjs"], {
+        env: { ...process.env, INDEXNOW_URL: `http://127.0.0.1:${port}/api/indexnow`, CRON_SECRET: "s3cret" },
+      });
+      expect(auth).toBe("Bearer s3cret");
+      expect(stdout).toContain('"outcome":"disabled"');
+      expect(stdout).not.toContain("s3cret");
+    } finally {
+      server.close();
+    }
+  });
+
+  it("exits non-zero when the web service refuses or isn't configured", async () => {
+    const server = createServer((_req, res) => {
+      res.statusCode = 401;
+      res.end("{}");
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const { port } = server.address() as AddressInfo;
+    try {
+      await expect(
+        run(process.execPath, ["scripts/indexnow-cron.mjs"], {
+          env: { ...process.env, INDEXNOW_URL: `http://127.0.0.1:${port}/x`, CRON_SECRET: "wrong" },
+        }),
+      ).rejects.toThrow();
+      await expect(
+        run(process.execPath, ["scripts/indexnow-cron.mjs"], { env: { ...process.env, INDEXNOW_URL: "", CRON_SECRET: "" } }),
+      ).rejects.toThrow();
+    } finally {
+      server.close();
+    }
   });
 });

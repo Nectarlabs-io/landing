@@ -25,7 +25,7 @@ export async function resetDatabase(url: string): Promise<void> {
 export function runScript(script: string, databaseUrl: string, args: string[] = []): string {
   return execFileSync(process.execPath, [script, ...args], {
     // Only DATABASE_URL, so a developer's MIGRATION_DATABASE_URL can't leak in.
-    env: { ...process.env, DATABASE_URL: databaseUrl, MIGRATION_DATABASE_URL: "", DATABASE_URL_UNPOOLED: "" },
+    env: { ...process.env, DATABASE_URL: databaseUrl, MIGRATION_DATABASE_URL: "" },
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });

@@ -29,7 +29,7 @@ export function notificationEmail(row: StoredPilotRequest) {
     `Chains: ${row.chains || "—"}`,
     `Telegram or X: ${row.handle || "—"}`,
     `Markets or collateral: ${row.markets || "—"}`,
-    `Capacity: ${capacityLabel(row.capacity)}`,
+    `Size involved: ${capacityLabel(row.capacity)}`,
     "",
     "Anything else:",
     row.message || "—",

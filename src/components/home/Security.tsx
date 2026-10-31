@@ -29,8 +29,8 @@ export function Security() {
         <Card tone="plain" gap={10}>
           <span className={styles.smallTitle}>Thin core</span>
           <span className={styles.smallText}>
-            Pappus only settles and holds escrow. Pricing risk sits with buyers; listing risk with
-            curators.
+            Markets, escrow and settlement are separate, minimal contracts. Pricing risk sits with
+            buyers, and Nectar Reserve is never the only bid a limit counts on.
           </span>
         </Card>
         <Card tone="plain" gap={10}>

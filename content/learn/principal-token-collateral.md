@@ -8,6 +8,7 @@ status: draft
 eyebrow: LEARN
 updated: 2026-10-31
 related:
+  - /learn/what-is-an-exit-backed-borrowing-limit
   - /research/pt-reusd-liquidations-aug-2026
   - /learn/dex-depth-and-collateral-caps
   - /learn/funded-quote-settlement
@@ -70,6 +71,6 @@ Curators have the usual levers, and each one costs something:
 | Value PTs closer to redemption | Fewer liquidations triggered by one sale | A bad underlying can go unnoticed for longer |
 | Committed buyers who hold to maturity | Liquidations clear without selling into the pool | Needs buyers to commit funds in advance |
 
-The last lever is what Nectar Network is built for. Nectar lines up funded buyers for collateral so liquidations can clear when DEX liquidity can't absorb them, and for PTs those buyers can price the token against its redemption instead of its pool. Like every part of Nectar, it's in development, and pilot partners see it first.
+The last lever is what Nectar Network is built for. Nectar Network is credit and liquidity for tokenized assets: lending markets whose borrowing limits are backed by committed buyers, so loans can go further and positions still close when DEX liquidity can't absorb them. For PTs, committed buyers can price the token against its redemption instead of its pool, and because those quotes are committed for a notice period, a lending market can count them when it sets a [borrowing limit](/learn/what-is-an-exit-backed-borrowing-limit). Like every part of Nectar, it's in development, and pilot partners see it first.
 
-If you curate markets that list principal tokens, [talk to us](/contact) about the pilot.
+If you lend against principal tokens, curate markets that list them, or want to quote them as a buyer, [talk to us](/contact) about the pilot.

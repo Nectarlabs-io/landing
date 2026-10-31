@@ -10,33 +10,37 @@ import { Section } from "./Section";
 
 const AUDIENCES = [
   {
-    kicker: "CURATORS AND PROTOCOLS",
-    title: "Raise your caps. We'll be the bid.",
-    body: "Committed exit capacity for each collateral you list, published onchain so risk managers can size caps against it.",
-    points: ["Nectar Feed per market", "Launch Cover for new markets", "Designated, bonded keepers"],
-    cta: "Talk to us about your markets →",
+    kicker: "BORROWERS, THROUGH APPS",
+    title: "A higher limit, and an exit instead of a fire sale.",
+    body: "Apps, brokers and agents give their borrowers more room on tokenized assets. The borrower pays a rate premium on the extra limit.",
+    points: [
+      "Limits from recoverable value, not a static ratio",
+      "Deleveraging through committed quotes, not a cliff",
+      "One integration through the agent API",
+    ],
+    cta: "Talk to us about your app →",
   },
   {
     kicker: "BUYERS",
-    title: "Buy collateral at a known price.",
-    body: "Post a funded quote once. Your USDC sits in escrow and backs one live quote at a time; you receive collateral only when a position closes.",
+    title: "Get paid to stand behind loans.",
+    body: "Post funded quotes in USDC escrow with a notice period. Earn commitment fees on the size you commit, and receive collateral at a known discount when a position closes.",
     points: [
+      "Prop AMMs, market makers and funds",
+      "Reprice cheaply; size stays for the notice period",
       "Macaulay pricing for PTs and queued credit",
-      "Partial fills, size caps, expiry",
-      "Cancel any time, with notice",
     ],
     cta: "Join the pilot as a buyer →",
   },
   {
-    kicker: "APPS AND LENDERS",
-    title: "An exit when the pool runs dry.",
-    body: "Automation and looping apps route thin-collateral repays through Nectar. Lenders in fully borrowed markets turn stuck positions into cash.",
+    kicker: "LENDERS, CURATORS AND PROTOCOLS",
+    title: "Raise your caps. We'll be the bid.",
+    body: "Lend into markets whose collateral has committed buyers, or add exit-backed limits and funded quotes to the markets you already run.",
     points: [
-      "Nectar Route for automation apps",
-      "Nectar Exits for lenders",
-      "One integration for every market we cover",
+      "Nectar-curated vaults for lenders",
+      "A module for Morpho, Euler and Aave markets",
+      "Designated, bonded keepers",
     ],
-    cta: "Talk to us about integrating →",
+    cta: "Talk to us about your markets →",
   },
 ];
 
@@ -46,7 +50,7 @@ export function WhoItsFor() {
       <SectionHeading
         id="who-h"
         eyebrow="WHO IT'S FOR"
-        title="Curators pay for capacity. Buyers supply it."
+        title="Borrowers pay for higher limits. Buyers stand behind them."
       />
       <div className={styles.cards3}>
         {AUDIENCES.map((audience) => (

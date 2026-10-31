@@ -2,17 +2,13 @@
 /*
  * Applies the plain SQL files in /migrations, in filename order, once each.
  *
- * On Vercel it runs inside the production build (scripts/vercel-build.mjs);
- * when self-hosting, as a pre-deploy command. Any failure exits non-zero,
- * which fails the deploy and leaves the previous version serving traffic.
+ * Runs as Railway's pre-deploy command: any failure exits non-zero, which
+ * stops the deploy and leaves the previous version serving traffic.
  *
  * Each file runs in its own transaction and is recorded in schema_migrations.
- * A session advisory lock stops two deploys migrating at the same time, so it
- * connects directly rather than through a transaction-mode pooler: it uses
- * MIGRATION_DATABASE_URL, then DATABASE_URL_UNPOOLED (set by the Neon
- * integration), then DATABASE_URL.
- *
- *   --skip-if-unset   exit 0 with a notice when no database URL is set
+ * A session advisory lock stops two deploys migrating at the same time. It
+ * connects with MIGRATION_DATABASE_URL if set (e.g. a direct URL when the app
+ * goes through a pooler), otherwise DATABASE_URL.
  */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
@@ -25,13 +21,8 @@ const MIGRATIONS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "
 const LOCK_KEY = 7_031_442_901;
 
 async function main() {
-  const connectionString =
-    process.env.MIGRATION_DATABASE_URL || process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+  const connectionString = process.env.MIGRATION_DATABASE_URL || process.env.DATABASE_URL;
   if (!connectionString) {
-    if (process.argv.includes("--skip-if-unset")) {
-      console.log("[migrate] skipped: no database URL is set");
-      return;
-    }
     throw new Error("DATABASE_URL is not set.");
   }
 

@@ -10,10 +10,9 @@ import { errorCode, logEvent } from "@/lib/server/log";
 
 /*
  * Pings IndexNow with sitemap URLs whose lastModified changed since the last
- * accepted submission. Called once a day by the Vercel cron job in
- * vercel.json (production only), which sends "Authorization: Bearer
- * $CRON_SECRET". Anything else can call it the same way, e.g. a scheduler
- * when self-hosting.
+ * accepted submission. Called once a day by the Railway cron service
+ * (scripts/indexnow-cron.mjs), which sends "Authorization: Bearer
+ * $CRON_SECRET".
  *
  * Off unless INDEXNOW_ENABLED=true, so nothing is submitted before
  * nectarnetwork.fun serves this site (IndexNow checks the key file there).

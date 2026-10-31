@@ -124,7 +124,7 @@ export async function GET(_request: Request, { params }: RouteContext<"/og/[...s
 
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22 }}>
           <span>nectarnetwork.fun</span>
-          <span>Exit infrastructure for lending markets</span>
+          <span>Credit and liquidity for tokenized assets</span>
         </div>
       </div>
     ),

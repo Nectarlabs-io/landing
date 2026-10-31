@@ -18,7 +18,7 @@ export function Hero() {
       <div className={cx(styles.inner, styles.split)}>
         <div className={styles.heroCopy}>
           <Eyebrow tone="accent" className="rise">
-            EXIT INFRASTRUCTURE FOR GLOBAL CREDIT
+            CREDIT AND LIQUIDITY FOR TOKENIZED ASSETS
           </Eyebrow>
           <h1 className={styles.heroTitle}>
             <span className={cx(styles.heroWord, "rise")} style={delay(0.08)}>
@@ -32,12 +32,13 @@ export function Hero() {
             </span>
           </h1>
           <p className={cx(styles.heroLead, "rise")} style={delay(0.45)}>
-            Nectar lines up funded buyers for lending-market collateral, so positions close even
-            when DEX liquidity can&apos;t absorb them. Curators raise caps. Lenders get repaid.
+            Nectar backs borrowing limits with committed buyers. Buyers post funded quotes in
+            escrow, so lending markets can lend more against tokenized assets, and positions close
+            even when DEX liquidity can&apos;t absorb them.
           </p>
           <div className={cx(styles.actions, "rise")} style={delay(0.55)}>
             <ButtonLink href={routes.contact}>Join the pilot</ButtonLink>
-            <ButtonLink href="#how" variant="secondary">
+            <ButtonLink href="#limits" variant="secondary">
               See how it works ↓
             </ButtonLink>
           </div>
@@ -114,8 +115,9 @@ function ExitCapacityCard() {
       </div>
 
       <p className={styles.cardNote}>
-        Nectar fills the gap with funded quotes held in USDC escrow. Nectar Feed will publish this
-        for every market it covers. Coming soon.
+        Committed buyers close that gap with funded quotes in USDC escrow, and lending markets can
+        set limits against them. Nectar Feed will publish this for every market it covers. Coming
+        soon.
       </p>
     </Card>
   );

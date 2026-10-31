@@ -12,8 +12,8 @@ function isPublished(file: string): boolean {
 }
 
 const nextConfig: NextConfig = {
-  // Vercel builds its own output. Elsewhere (Docker), a self-contained server.
-  output: process.env.VERCEL ? undefined : "standalone",
+  // Self-contained server for the Docker image (see Dockerfile).
+  output: "standalone",
   // Routes that run on the server at request time (e.g. an OG image for an
   // unknown page) read Markdown from /content and fonts from src/assets/fonts.
   outputFileTracingIncludes: {
@@ -25,9 +25,10 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Any host but the canonical one (*.vercel.app deployment and preview
-        // URLs, staging) is kept out of search results. Host-based, so the
-        // same build serves the real domain without a flag to flip.
+        // Any host but the canonical one (*.up.railway.app service domains,
+        // staging, any leftover *.vercel.app URL) is kept out of search results.
+        // Host-based, so the same build serves the real domain without a flag
+        // to flip.
         source: "/:path*",
         missing: [{ type: "host", value: CANONICAL_HOST.replace(/\./g, "\\.") }],
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
@@ -50,7 +51,7 @@ const nextConfig: NextConfig = {
       {
         // Canonical host: www → apex, keeping the path. 301 rather than
         // Next's default 308, as requested for the domain move. (HTTP → HTTPS
-        // happens at the platform edge before requests reach the app.)
+        // is a 301 at Railway's edge before requests reach the app.)
         source: "/:path*",
         has: [{ type: "host", value: `www\\.${CANONICAL_HOST.replace(/\./g, "\\.")}` }],
         destination: `https://${CANONICAL_HOST}/:path*`,

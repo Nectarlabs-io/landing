@@ -6,6 +6,7 @@ status: draft
 eyebrow: LEARN
 updated: 2026-10-31
 related:
+  - /learn/what-is-an-exit-backed-borrowing-limit
   - /learn/dex-depth-and-collateral-caps
   - /research/cirbtc-collateral-vs-dex-depth
   - /learn/glossary
@@ -64,19 +65,19 @@ Depth measured on an ordinary day overstates what will be there in a crash, for 
 
 On Aug 25, 2026, $36.1M of Morpho loans were liquidated in 14 minutes after one wallet sold PT-reUSD into an $8.97M Pendle pool: a single sale into a thin pool, followed by a wave of liquidations. [The case study](/research/pt-reusd-liquidations-aug-2026) covers what is known about it.
 
-## How do curators use exit capacity?
+## How do lending markets use exit capacity?
 
-Curators and risk managers decide which collateral a market accepts, the LLTV, and the [supply cap](/learn/glossary#supply-cap): how much of the asset the market will take in total. When they can't see a reliable exit, the safe choice is a low cap. Unsold collateral becomes bad debt, so curators keep caps low.
+Lenders and curators decide which collateral a market accepts and how much can be borrowed against it: the loan-to-value limit and the [supply cap](/learn/glossary#supply-cap). When they can't see a reliable exit, the safe choice is a low limit. Unsold collateral becomes bad debt, so lenders keep limits low and markets for tokenized assets stay small.
 
-That has a cost. A low cap limits how much can be borrowed against an asset, even when demand is there. [Why DEX depth limits collateral caps](/learn/dex-depth-and-collateral-caps) explains the trade-off in more detail.
+That has a cost. A low limit caps how much can be borrowed against an asset, even when demand is there. [Why DEX depth limits collateral caps](/learn/dex-depth-and-collateral-caps) explains the trade-off in more detail.
 
-Committed exit capacity gives curators a number they can size a cap against: collateral that buyers have already agreed, and funded, to take.
+Committed exit capacity changes the input. Instead of a static ratio chosen to survive the worst day, a market can set each limit from the asset's [recoverable value](/learn/glossary#recoverable-value): what committed buyers, a house buyer and verified DEX depth could take, minus a [haircut](/learn/glossary#haircut). [What is an exit-backed borrowing limit?](/learn/what-is-an-exit-backed-borrowing-limit) shows how that works.
 
 ## How would Nectar measure and publish it?
 
-Nectar Network is exit infrastructure for lending markets: it lines up funded buyers for collateral so liquidations can clear when DEX liquidity can't absorb them. Two parts of it deal with exit capacity directly, and both are in development.
+Nectar Network is credit and liquidity for tokenized assets: lending markets whose borrowing limits are backed by committed buyers, so loans can go further and positions still close when DEX liquidity can't absorb them. Two parts of it deal with exit capacity directly, and both are in development.
 
-- **Nectar Feed** is designed to publish committed exit capacity per asset and market, readable onchain by cap-setters.
-- **A depth study** for each pilot partner measures how much of their collateral a DEX can absorb, before anyone quotes capacity.
+- **Nectar Feed** is designed to publish committed exit capacity per asset and market, readable onchain by risk managers and agents. Each borrowing limit is set from it.
+- **A depth study** for each pilot partner measures how much of their collateral a DEX can absorb, before anyone counts it.
 
-How committed bids get counted toward the Feed is one of the rules the pilot cohort helps set. If you curate a market or run a lending protocol, [talk to us](/contact) about the pilot.
+How bids get counted is one of the rules the pilot cohort helps set. If you lend, curate a market or run an app whose borrowers want higher limits, [talk to us](/contact) about the pilot.

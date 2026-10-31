@@ -2,7 +2,7 @@
 title: About Nectar Network
 metaTitle: About Nectar Network and its founder
 crumb: About
-description: "Nectar Network is exit infrastructure for lending markets, founded by Kunal and in development with a pilot cohort. What it is, who runs it and how to reach us."
+description: "Nectar Network is credit and liquidity for tokenized assets, founded by Kunal and in development with a pilot cohort. What it is, who runs it and how to reach us."
 type: about
 status: draft
 eyebrow: ABOUT
@@ -13,20 +13,21 @@ related:
   - /contact
 ---
 
-Nectar Network is exit infrastructure for lending markets: it lines up funded buyers for collateral so liquidations can clear when DEX liquidity can't absorb them. It was founded by Kunal, and it is in development with a small pilot cohort of curators, lending protocols and buyers.
+Nectar Network is credit and liquidity for tokenized assets: lending markets whose borrowing limits are backed by committed buyers, so loans can go further and positions still close when DEX liquidity can't absorb them. It was founded by Kunal, and it is in development with a small pilot cohort of buyers, lenders and apps.
 
 ## What does Nectar Network do?
 
-Every loan in a lending market assumes that, if the borrower can't repay, someone will buy the collateral. For some collateral, from wrapped BTC to principal tokens and tokenized stocks, the DEX pools behind it are far smaller than the collateral borrowed against it. When prices fall, those liquidations can't clear, and the result is bad debt and caps kept low.
+Every loan in a lending market assumes that, if the borrower can't repay, someone will buy the collateral. For many tokenized assets, from wrapped BTC to principal tokens and tokenized real-world assets, the DEX pools behind them are far smaller than what is borrowed against them. Unsold collateral becomes bad debt, so lenders keep limits low and markets for tokenized assets stay small.
 
-Nectar lines up buyers in advance. Buyers post funded quotes held in USDC escrow; when a DEX can't absorb a liquidation, it settles against a quote in one transaction, and Nectar Feed is designed to publish how much capacity is committed so curators can size caps against it. [How it works](/how-it-works) covers the design.
+Nectar lines up buyers in advance. Buyers post funded quotes in USDC escrow, committed for a notice period, and lending markets set each borrowing limit from the value those quotes and verified DEX depth can recover. When a position has to close and the pool is too thin, Pappus settles it against committed quotes in one transaction, with Nectar Reserve filling last. [How it works](/how-it-works) covers the design.
 
 ## Who founded Nectar Network?
 
-Nectar Network was founded by Kunal.
+Kunal is the founder of Nectar Network.
 
-<!-- REVIEW: Add Kunal's surname (if you want it public), role title, a one-line background, and the profile links to show here (e.g. personal X, GitHub, LinkedIn). The page will link only to profiles you confirm. -->
-<!-- REVIEW: Anything else to add here — team members, investors, accelerators or grant programmes? I haven't guessed any of these. -->
+- **X:** [@kunaldrall_](https://x.com/kunaldrall_)
+- **GitHub:** [kunal-drall](https://github.com/kunal-drall)
+- **LinkedIn:** [kunaldrall](https://linkedin.com/in/kunaldrall)
 
 ## Where is Nectar Network in its development?
 

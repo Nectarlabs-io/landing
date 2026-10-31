@@ -1,3 +1,4 @@
+import { BorrowingLimits } from "@/components/home/BorrowingLimits";
 import { Collateral } from "@/components/home/Collateral";
 import { ClosingCta } from "@/components/home/ClosingCta";
 import { Hero } from "@/components/home/Hero";
@@ -25,8 +26,9 @@ export default function HomePage() {
       <main>
         <Hero />
         <Problem />
-        <Pilot />
+        <BorrowingLimits />
         <HowItWorks />
+        <Pilot />
         <WhoItsFor />
         <Protocols />
         <Products />

@@ -4,7 +4,7 @@ import pg from "pg";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { POST } from "@/app/api/pilot/route";
-import { MAX_FIELD_LENGTH, MAX_MESSAGE_LENGTH } from "@/lib/pilot";
+import { MAX_FIELD_LENGTH, MAX_MESSAGE_LENGTH, PILOT_ROLES, roleLabel } from "@/lib/pilot";
 import { closePools } from "@/lib/server/db";
 import { RATE_LIMIT_PER_HOUR } from "@/lib/server/pilot-store";
 
@@ -123,12 +123,30 @@ describe("POST /api/pilot", () => {
       from: "Nectar pilot <pilot@nectarnetwork.fun>",
       to: ["kunal@nectarnetwork.fun"],
       reply_to: "ada@example.com",
-      subject: "Pilot request: Analytical Engines (Buyer or market maker)",
+      subject: "Pilot request: Analytical Engines (Buyer, market maker or prop AMM)",
     });
     expect(email.text).toContain("We would like to bid on PTs.");
+    expect(email.text).toContain("Size involved: $10M to $50M");
 
     expect(logs.join("\n")).toContain('"outcome":"stored"');
     expect(logs.join("\n")).toContain(`"id":"${row.id}"`);
+  });
+
+  it("accepts every role the form offers, in the design's order", async () => {
+    expect(PILOT_ROLES.map((r) => r.id)).toEqual(["app", "lender", "buyer", "protocol", "issuer", "keeper", "other"]);
+    for (const [index, role] of PILOT_ROLES.entries()) {
+      const response = await post({ ...VALID, role: role.id }, `203.0.113.${100 + index}`);
+      expect(response.status, role.id).toBe(201);
+    }
+    expect((await rows()).map((r) => r.role)).toEqual(PILOT_ROLES.map((r) => r.id));
+  });
+
+  it("no longer offers the old curator role, but rows stored with it still read sensibly", async () => {
+    expect((await post({ ...VALID, role: "curator" })).status).toBe(422);
+    await db.query(
+      `INSERT INTO pilot_requests (role, name, email, organisation) VALUES ('curator', 'Old', 'old@example.com', 'Org')`,
+    );
+    expect(roleLabel("curator")).toBe("Curator or risk manager");
   });
 
   it("still succeeds when the email API fails, and logs the failure", async () => {
@@ -222,10 +240,10 @@ describe("POST /api/pilot", () => {
     expect(atLimit.status).toBe(201);
   });
 
-  it("rejects unknown roles, unknown capacity ranges and missing required fields", async () => {
+  it("rejects unknown roles, unknown sizes and missing required fields", async () => {
     const cases: Array<[Record<string, unknown>, string]> = [
       [{ ...VALID, role: "admin" }, "Pick one of the listed roles."],
-      [{ ...VALID, capacity: "gt1000" }, "Pick one of the listed capacity ranges."],
+      [{ ...VALID, capacity: "gt1000" }, "Pick one of the listed sizes."],
       [{ ...VALID, role: "" }, "Add what you do so we can reply."],
       [
         { ...VALID, name: " ", email: "not-an-email", organisation: "" },

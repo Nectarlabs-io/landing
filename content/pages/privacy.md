@@ -18,7 +18,7 @@ When you send the form, we store:
 | What | Why |
 | --- | --- |
 | Your role, name, work email and organisation | So we know who you are and can reply |
-| Chains, markets, capacity range and message, if you give them | So we can prepare for a call about your markets |
+| Chains, markets or collateral, size involved and message, if you give them | So we can prepare for a call about your markets |
 | Telegram or X handle, if you give one | So we can reach you another way if you prefer |
 | Your browser's user agent | To spot automated submissions |
 | A one-way hash of your IP address | To limit how many requests one network can send |
@@ -34,18 +34,13 @@ The request is saved to our database, and a notification with its contents is em
 
 Two services handle it on our behalf: Railway, which hosts this site and its database, and Resend, which delivers the notification email. We don't sell or share your details with anyone else.
 
-<!-- REVIEW: If PILOT_WEBHOOK_URL is ever turned on (it's off by default), name the service it posts to here, since it receives the full request. -->
-
-
 ## How long do we keep it?
 
-We keep a request until you ask us to delete it, or until we no longer need it to talk to you about the pilot, whichever comes first.
-
-<!-- REVIEW: Please confirm this retention rule, or give a fixed period (e.g. "deleted 12 months after our last contact"). I haven't invented a number. -->
+We keep a pilot request for 12 months after our last contact with you, then delete it. If you'd like it deleted sooner, ask us and we will.
 
 ## How do I ask for my data to be deleted?
 
-Email kunal@nectarnetwork.fun from the address you used on the form and ask us to delete your request. We'll delete it and reply to confirm.
+Email kunal@nectarnetwork.fun from the address you used on the form and ask us to delete your request. We'll delete it, before the 12 months are up, and reply to confirm.
 
 ## Does this site use cookies or analytics?
 

@@ -8,6 +8,7 @@ status: draft
 eyebrow: LEARN
 updated: 2026-10-31
 related:
+  - /learn/what-is-an-exit-backed-borrowing-limit
   - /learn/what-is-exit-capacity
   - /learn/dex-depth-and-collateral-caps
   - /faq
@@ -40,7 +41,7 @@ Bad debt nearly always traces back to one of a few failures, and most of them ar
 | Price gaps | The price falls past the whole buffer before anyone can liquidate, so the collateral is already worth less than the debt |
 | Thin DEX depth | The collateral can be liquidated, but selling it drives the price so far down that it doesn't cover the debt |
 | Liquidations that aren't worth doing | The bonus doesn't cover the expected loss on the sale, so no liquidator steps in and positions sink further |
-| Prices that can't update | Weekend gaps or issuer pauses for tokenized stocks mean the market can't see or act on the real price |
+| Prices that can't update | Market hours or issuer pauses for tokenized real-world assets mean the market can't see or act on the real price |
 | Exits that take time | Redemption and withdrawal queues mean the collateral's real value can't be reached in the minutes a liquidation needs |
 
 They tend to arrive together. When prices gap, DEX pools thin and bots take the easy positions. Unsold collateral becomes bad debt.
@@ -76,8 +77,9 @@ That's the right call for safety, but it caps growth: borrowers who want to post
 The options all come down to making sure there is a buyer:
 
 - **Caps sized to the real exit**, measured during the kind of move that would trigger liquidations, not on a calm day.
-- **Committed buyers** who agree in advance to take collateral at a set price, with funds already in escrow, so their bids don't vanish when pools thin out.
+- **Committed buyers** who agree in advance to take collateral at an oracle-referenced price, with funds already in escrow for a notice period, so their bids don't vanish when pools thin out.
+- **Limits set from recoverable value**, what committed buyers and verified depth could actually take, minus a haircut, rather than a static ratio.
 - **Buyers who can hold to redemption** for collateral that redeems later, instead of selling into the same pool that caused the fall.
 - **Keepers that act early** and route each liquidation to an exit that can absorb it.
 
-Nectar Network is exit infrastructure for lending markets: it lines up funded buyers for collateral so liquidations can clear when DEX liquidity can't absorb them. It is in development, and a small pilot cohort of curators, lending protocols and buyers comes first. [How it works](/how-it-works) covers the design, and you can [talk to us](/contact) about the pilot.
+Nectar Network is credit and liquidity for tokenized assets: lending markets whose borrowing limits are backed by committed buyers, so loans can go further and positions still close when DEX liquidity can't absorb them. It is in development, and a small pilot cohort of buyers, lenders and apps comes first. [How it works](/how-it-works) covers the design, and you can [talk to us](/contact) about the pilot.

@@ -8,6 +8,7 @@ status: draft
 eyebrow: LEARN
 updated: 2026-10-31
 related:
+  - /learn/what-is-an-exit-backed-borrowing-limit
   - /learn/what-is-exit-capacity
   - /learn/bad-debt-in-lending-markets
   - /learn/principal-token-collateral
@@ -69,18 +70,17 @@ The gap between collateral and depth is widest for assets whose main exit isn't 
 | --- | --- | --- |
 | Wrapped BTC | Morpho (cirBTC) | DEX depth far below collateral |
 | Principal tokens | Morpho, Aave, Euler | One thin Pendle pool until maturity |
-| Tokenized stocks | Aave V4 Equities Hub, Morpho, Kamino | Weekend price gaps, issuer pauses |
-| Credit and RWA tokens | Aave V4, Morpho, Blend | Redemption queues, sometimes cross-chain |
+| Tokenized real-world assets | Aave V4, Morpho, Kamino, Blend | Market hours, issuer pauses, redemption queues |
 | LSTs and LRTs | Aave, Morpho, Lido Lend | Withdrawal queues |
 
 [Principal tokens](/learn/principal-token-collateral) are an especially sharp case: their main exit before maturity is often a single AMM pool, so liquidations sell into the same pool that sets the price.
 
 ## How can committed bids change the calculation?
 
-The underlying problem is that DEX depth is uncommitted. Nobody has promised to be there when prices fall. Committed bids are different: a buyer agrees in advance to take collateral at a set price, and the funds sit in escrow until a position closes or the buyer cancels with notice.
+The underlying problem is that DEX depth is uncommitted. Nobody has promised to be there when prices fall. Committed bids are different: a buyer agrees in advance to take collateral at an oracle-referenced price, and the funds sit in escrow for at least a notice period, until a position closes or the buyer withdraws.
 
-Committed capacity doesn't vanish when pools thin out. If it is published somewhere a risk manager can read, it becomes something a cap can be sized against, alongside measured DEX depth.
+Committed capacity doesn't vanish when pools thin out. That changes what a limit can be set against. Instead of a static ratio chosen to survive the worst day, a market can cap borrowing at the asset's [recoverable value](/learn/glossary#recoverable-value): committed quotes, a house buyer's quotes and verified DEX depth, minus a [haircut](/learn/glossary#haircut), and never above the usual oracle limit. [What is an exit-backed borrowing limit?](/learn/what-is-an-exit-backed-borrowing-limit) works through an example.
 
-This is what Nectar Network is built for. Nectar is exit infrastructure for lending markets: it lines up funded buyers for collateral so liquidations can clear when DEX liquidity can't absorb them. [Nectar Feed](/how-it-works) is designed to publish committed exit capacity per asset and market, readable onchain. Like every part of Nectar, it is in development, and a small pilot cohort comes first.
+This is what Nectar Network is built for. Nectar Network is credit and liquidity for tokenized assets: lending markets whose borrowing limits are backed by committed buyers, so loans can go further and positions still close when DEX liquidity can't absorb them. [Nectar Feed](/how-it-works) is designed to publish committed exit capacity per asset and market, readable onchain, and each limit is set from it. Like every part of Nectar, it is in development, and a small pilot cohort comes first.
 
-If you curate a market and your caps are set by the exit rather than the asset, [talk to us](/contact).
+If you lend or curate, and your limits are set by the exit rather than the asset, [talk to us](/contact).

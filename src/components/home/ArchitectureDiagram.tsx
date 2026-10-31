@@ -20,14 +20,14 @@ type Node = {
 };
 
 const NODES: Node[] = [
-  { x: 24, y: 56, w: 192, h: 88, title: "Lending markets", detail: "Morpho · Aave V4 · Blend" },
+  { x: 24, y: 56, w: 192, h: 88, title: "Lending markets", detail: "Nectar's own, or Morpho, Euler, Aave" },
   { x: 312, y: 56, w: 192, h: 88, title: "Nectar Keepers", detail: "watch every position" },
-  { x: 600, y: 36, w: 224, h: 128, title: "Nectar Route", detail: "DEX deep enough?", kind: "decision" },
-  { x: 944, y: 56, w: 184, h: 88, title: "DEX swap", detail: "liquidate and sell in one transaction" },
-  { x: 616, y: 276, w: 192, h: 88, title: "Pappus", detail: "settles from quote escrow", kind: "settle" },
-  { x: 944, y: 276, w: 184, h: 88, title: "Buyers", detail: "funded quotes, Macaulay, Nectar Reserve" },
+  { x: 600, y: 36, w: 224, h: 128, title: "Nectar Route", detail: "pool deep enough?", kind: "decision" },
+  { x: 944, y: 56, w: 184, h: 88, title: "DEX or prop AMM", detail: "liquidate and fill in one transaction" },
+  { x: 616, y: 276, w: 192, h: 88, title: "Pappus", detail: "settles against committed quotes", kind: "settle" },
+  { x: 944, y: 276, w: 184, h: 88, title: "Buyers", detail: "funded quotes; Nectar Reserve fills last" },
   { x: 616, y: 456, w: 192, h: 88, title: "Nectar Feed", detail: "committed capacity, onchain" },
-  { x: 24, y: 456, w: 192, h: 88, title: "Curators", detail: "size caps against it" },
+  { x: 24, y: 456, w: 192, h: 88, title: "Borrowing limit", detail: "oracle limit vs recoverable value" },
 ];
 
 type Edge = { d: string; tone: "dim" | "accent"; arrow?: boolean; flow?: boolean };
@@ -57,7 +57,7 @@ const LABELS: Label[] = [
   { x: 360, y: 292, w: 96, text: "debt repaid", accent: true, center: true },
   { x: 724, y: 401, w: 136, text: "published onchain" },
   { x: 356, y: 472, w: 120, text: "reads capacity", center: true },
-  { x: 100, y: 392, w: 88, text: "raises caps" },
+  { x: 100, y: 392, w: 88, text: "sets limits" },
 ];
 
 /** Dots that travel along the main flow lines. */
@@ -69,7 +69,7 @@ const RUNNERS = [
 ] as const;
 
 const DESCRIPTION =
-  "Architecture: lending markets to Nectar Keepers to Nectar Route. If DEX depth is enough, a DEX swap. If too thin, Pappus settles against a buyer's funded quote, repays the debt to the market, delivers collateral to the buyer, and publishes committed capacity to Nectar Feed, which curators read to size caps.";
+  "Architecture: lending markets to Nectar Keepers to Nectar Route. If DEX or prop AMM depth is enough, the position is liquidated and filled there. If too thin, Pappus settles against committed quotes from buyers, with Nectar Reserve last, repays the debt to the market and delivers collateral to the buyer. Pappus publishes committed capacity to Nectar Feed, which sets each borrowing limit: the lower of the oracle limit and recoverable value.";
 
 type Step = { content: ReactNode; kind?: "decision" | "settle"; arrowBefore?: ReactNode };
 
@@ -77,7 +77,7 @@ const STEPS: Step[] = [
   {
     content: (
       <>
-        <b>Lending markets</b> · Morpho, Aave V4, Blend. A position is at risk.
+        <b>Lending markets</b>, Nectar&apos;s own or Morpho, Euler and Aave. A position is at risk.
       </>
     ),
   },
@@ -92,7 +92,8 @@ const STEPS: Step[] = [
     kind: "decision",
     content: (
       <>
-        <b>Nectar Route</b> checks DEX depth. Deep enough: liquidate and swap in one transaction.
+        <b>Nectar Route</b> checks DEX and prop AMM depth. Deep enough: liquidate and fill in one
+        transaction.
       </>
     ),
   },
@@ -101,15 +102,15 @@ const STEPS: Step[] = [
     arrowBefore: "↓ too thin",
     content: (
       <>
-        <b>Pappus</b> settles against a buyer&apos;s funded quote: the debt is repaid, the buyer
-        gets the collateral.
+        <b>Pappus</b> settles against committed quotes, Nectar Reserve last: the debt is repaid,
+        the buyer gets the collateral.
       </>
     ),
   },
   {
     content: (
       <>
-        <b>Nectar Feed</b> publishes committed capacity. Curators size caps against it.
+        <b>Nectar Feed</b> publishes committed capacity, and each borrowing limit is set from it.
       </>
     ),
   },

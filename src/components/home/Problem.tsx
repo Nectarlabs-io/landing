@@ -37,7 +37,7 @@ export function Problem() {
         id="problem-h"
         eyebrow="THE PROBLEM"
         title="Every loan assumes a buyer. On a calm day, nobody checks."
-        lead="When prices gap, DEX pools thin and bots take the easy positions. Unsold collateral becomes bad debt, so curators keep caps low."
+        lead="When prices gap, DEX pools thin and bots take the easy positions. Unsold collateral becomes bad debt, so lenders keep limits low and markets for tokenized assets stay small."
       />
       <CellGrid min={240}>
         {STATS.map((stat) => (

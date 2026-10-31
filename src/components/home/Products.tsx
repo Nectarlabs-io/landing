@@ -8,7 +8,7 @@ import { Section } from "./Section";
 const PRODUCTS = [
   {
     name: "Nectar Feed",
-    text: "Committed exit capacity per asset and market, readable onchain by cap-setters.",
+    text: "Committed exit capacity per asset and market, readable onchain by risk managers and agents.",
   },
   {
     name: "Nectar Route",
@@ -20,7 +20,7 @@ const PRODUCTS = [
   },
   {
     name: "Nectar Reserve",
-    text: "The house buyer vault. One buyer among many, never the only one.",
+    text: "The house prop AMM: quotes covered collateral and is the buyer of last resort. One buyer among many, never the only one.",
   },
   {
     name: "Nectar Keepers",
@@ -38,7 +38,7 @@ export function Products() {
       <SectionHeading
         id="prod-h"
         eyebrow="PRODUCTS"
-        title="Built on Pappus and Macaulay."
+        title="Built on the protocols."
         lead="All in development. Pilot partners get them first."
       />
       <CellGrid min={300}>

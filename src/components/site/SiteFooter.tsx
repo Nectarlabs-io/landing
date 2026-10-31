@@ -36,6 +36,7 @@ function footerColumns(): Array<{ title: string; links: FooterLink[] }> {
       links: [
         { label: "Pappus", href: "/#protocols" },
         { label: "Macaulay", href: "/#protocols" },
+        { label: "Borrowing limits", href: "/#limits" },
         { label: "How it works", href: visiblePage("/how-it-works") ? "/how-it-works" : "/#how" },
         { label: "Security", href: "/#security" },
       ],

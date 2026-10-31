@@ -19,8 +19,8 @@ export function ClosingCta() {
         Every loan needs a buyer. Nectar makes sure there is one.
       </h2>
       <p className={styles.closingLead}>
-        The pilot cohort is small and hands-on. Curator, lender, buyer or builder: tell us what you
-        need.
+        Liquidity that&apos;s there when the market isn&apos;t. The pilot cohort is small and
+        hands-on: buyer, lender, curator or app, tell us what you need.
       </p>
       <div className={cx(styles.actions, styles.closingActions)}>
         <ButtonLink href={routes.contact}>Talk to us</ButtonLink>

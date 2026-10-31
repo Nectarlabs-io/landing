@@ -9,13 +9,13 @@ import { SiteHeaderClient, type NavLink } from "./SiteHeaderClient";
  */
 export function SiteHeader({ showCta = true }: { showCta?: boolean }) {
   const howItWorks = visiblePage("/how-it-works");
-  const learn = visiblePage("/learn");
 
+  // Same order as the design's main nav.
   const links: NavLink[] = [
-    { label: "Pilot", href: "/#pilot" },
+    { label: "Borrowing limits", href: "/#limits" },
     { label: "How it works", href: howItWorks ? howItWorks.path : "/#how" },
+    { label: "Pilot", href: "/#pilot" },
     { label: "Products", href: "/#products" },
-    ...(learn ? [{ label: "Learn", href: learn.path }] : []),
     { label: "Security", href: "/#security" },
     { label: "Docs", href: site.docsUrl },
   ];

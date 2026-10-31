@@ -5,8 +5,8 @@ form (stored in Postgres, notified by email), and the explainer, research and re
 written in Markdown under `/content`.
 
 Next.js 16 (App Router, Cache Components, every page statically prerendered), React 19,
-TypeScript, CSS Modules, `pg`. Production runs on **Vercel** with a Neon Postgres database from the
-Vercel Marketplace. A `Dockerfile` is kept for self-hosting.
+TypeScript, CSS Modules, `pg`. Deployed on **Railway** from the repo's `Dockerfile`: a web service
+(pages + API), a Postgres database and a daily cron service for IndexNow.
 
 The internal app screens (Feed, Quotes, Curate, Keepers) are not part of this site. They are kept on
 the `app-preview` branch.
@@ -23,7 +23,7 @@ npm run dev                       # CONTENT_PREVIEW=1 npm run dev to see drafts
 | Script                  | What it does                                                           |
 | ----------------------- | ---------------------------------------------------------------------- |
 | `npm run dev`           | Development server on http://localhost:3000                            |
-| `npm run build`         | Production build (standalone server when not on Vercel)                 |
+| `npm run build`         | Production build (`output: 'standalone'`), then copies assets into it   |
 | `npm start`             | Runs the standalone server (`node .next/standalone/server.js`)          |
 | `npm run typecheck`     | Route types + `tsc --noEmit`                                           |
 | `npm run lint`          | ESLint                                                                 |
@@ -74,7 +74,7 @@ the previous site's `/features` → `/how-it-works` (or `/#how` until that page 
 `/vault`, `/performance` and `/dashboard` → `/`. A trailing slash is removed with a 308. HTTP →
 HTTPS happens at the platform edge.
 
-Every host except `nectarnetwork.fun` (deployment and preview URLs on `*.vercel.app`) gets
+Every host except `nectarnetwork.fun` (the `*.up.railway.app` service domains, staging) gets
 `X-Robots-Tag: noindex`, so only the real domain is indexed and nothing needs flipping at launch.
 
 ## Pilot form backend
@@ -98,31 +98,30 @@ If the database is unreachable the API returns `503` and the form asks people to
 kunal@nectarnetwork.fun instead.
 
 **Privacy.** `ip_hash` is `sha256(client IP + IP_HASH_SALT)`; the raw IP is never stored. The IP
-comes from `X-Real-IP`, which Vercel sets and overwrites so clients can't spoof it. Logs carry only
-request ids, outcomes and error codes, never submission content.
+comes from `X-Real-IP`, set by Railway's edge. Logs carry only request ids, outcomes and error codes,
+never submission content.
 
 ### Database
 
 Plain SQL migrations are kept in `/migrations` and are applied in filename order by
-`scripts/migrate.mjs`, which records each one in `schema_migrations`. On Vercel it runs inside
-production builds only (`scripts/vercel-build.mjs`), so a failed migration fails the build and the
-previous deployment keeps serving; preview builds never touch the schema. It connects with
-`DATABASE_URL_UNPOOLED` (set by the Neon integration) when present, because its advisory lock needs a
-direct connection.
+`scripts/migrate.mjs`, which records each one in `schema_migrations`. On Railway it runs as the
+pre-deploy command, so a failed migration stops the deploy and the previous version keeps serving.
+Migration 003 widened the role check for the Oct 31 roles; rows stored before it are not rewritten.
 
 No ORM: the app runs one parameterised insert and one count, and an ORM would add a build step and a
 dependency without simplifying either.
 
 ### Reading and exporting submissions
 
-Read them in the Neon console (Vercel → Storage → the database → Open in Neon → Tables →
-`pilot_requests`). To export CSV:
+Read them in Railway's database view on the Postgres service (table `pilot_requests`). To export CSV:
 
 ```bash
 DATABASE_URL='<connection string>' npm run export:pilot -- pilot-requests.csv
 ```
 
-Cells that a spreadsheet would treat as formulas are prefixed with `'`.
+From your machine the private `DATABASE_URL` isn't reachable; use the Postgres service's
+`DATABASE_PUBLIC_URL`, which exists only while Public Networking (TCP proxy) is turned on for the
+database. Cells that a spreadsheet would treat as formulas are prefixed with `'`.
 
 ### Tests
 
@@ -137,51 +136,55 @@ The test database is dropped and rebuilt on every run; don't point it at real da
 
 ## Environment variables
 
-| Variable                   | Where                | Notes                                                       |
-| -------------------------- | -------------------- | ----------------------------------------------------------- |
-| `DATABASE_URL`             | all                  | Set by the Neon integration on Vercel                       |
-| `DATABASE_URL_UNPOOLED`    | all                  | Set by the Neon integration; used by migrations             |
-| `IP_HASH_SALT`             | all, secret          | One per environment: `openssl rand -hex 32`                 |
-| `RESEND_API_KEY`           | for email, secret    | Resend API key with sending access                          |
-| `PILOT_FROM`               | for email            | Sender on the verified domain, e.g. `Nectar pilot <pilot@nectarnetwork.fun>` |
-| `PILOT_NOTIFY_TO`          | optional             | Defaults to `kunal@nectarnetwork.fun`                       |
-| `PILOT_WEBHOOK_URL`        | optional             | Extra JSON notification; off when empty                     |
-| `CRON_SECRET`              | production, secret   | Vercel sends it to `/api/indexnow`; 16+ random characters  |
-| `INDEXNOW_ENABLED`         | production           | `true` once nectarnetwork.fun serves this site              |
-| `GOOGLE_SITE_VERIFICATION` | production, build    | Search Console HTML-tag token (not needed with a DNS TXT)   |
-| `BING_SITE_VERIFICATION`   | production, build    | Bing Webmaster `msvalidate.01` token                        |
-| `SITE_NOINDEX`             | preview, build       | `true`: `noindex` meta, `Disallow: /`, empty sitemap        |
-| `CONTENT_PREVIEW`          | preview, build       | `1`: drafts are visible                                     |
+Set on the Railway **web** service unless noted. Never paste secret values into chat or commits.
 
-Variables marked "build" are read when pages are prerendered, so a change needs a redeploy.
-Without `DATABASE_URL` or `IP_HASH_SALT` the form returns 503 ("email us instead"). Without the two
-email variables, requests are stored but not emailed.
+| Variable                   | Where                     | Notes                                                       |
+| -------------------------- | ------------------------- | ----------------------------------------------------------- |
+| `DATABASE_URL`             | web                       | `${{Postgres.DATABASE_URL}}` (private network)              |
+| `IP_HASH_SALT`             | web, secret               | One per environment: `openssl rand -hex 32`                 |
+| `RESEND_API_KEY`           | web, secret, for email    | Resend API key with sending access                          |
+| `PILOT_FROM`               | web, for email            | Sender on the verified domain, e.g. `Nectar pilot <pilot@nectarnetwork.fun>` |
+| `PILOT_NOTIFY_TO`          | web                       | Defaults to `kunal@nectarnetwork.fun`                       |
+| `PILOT_WEBHOOK_URL`        | web, optional             | Extra JSON notification; off when empty (not in use)        |
+| `PORT`                     | web (production)          | `3000`, so the cron service can reference `${{web.PORT}}`   |
+| `CRON_SECRET`              | web, secret               | 16+ random characters; the cron service references it      |
+| `INDEXNOW_ENABLED`         | web (production)          | `true` once nectarnetwork.fun serves this site              |
+| `GOOGLE_SITE_VERIFICATION` | web, build                | Search Console HTML-tag token (not needed with a DNS TXT)   |
+| `BING_SITE_VERIFICATION`   | web, build                | Bing Webmaster `msvalidate.01` token                        |
+| `SITE_NOINDEX`             | web (staging), build      | `true`: `noindex` meta, `Disallow: /`, empty sitemap        |
+| `CONTENT_PREVIEW`          | web (staging), build      | `1`: drafts are visible                                     |
+| `INDEXNOW_URL`             | indexnow                  | `http://${{web.RAILWAY_PRIVATE_DOMAIN}}:${{web.PORT}}/api/indexnow` |
+| `CRON_SECRET`              | indexnow                  | `${{web.CRON_SECRET}}`                                      |
 
-## Deploying on Vercel
+Variables marked "build" are read when pages are prerendered; the `Dockerfile` declares them as
+`ARG`s so Railway passes them to the build, and a change needs a redeploy. Without `DATABASE_URL` or
+`IP_HASH_SALT` the form returns 503 ("email us instead"). Without the two email variables, requests
+are stored but not emailed.
 
-`vercel.json` sets the build command (`node scripts/vercel-build.mjs`: migrations on production
-builds, then `next build`) and a daily cron job for `/api/indexnow`. Cron jobs run on production
-deployments only.
+## Deploying on Railway
 
-The project is **nectar-landing** (team "kunal's projects"). It is not linked to Git: the Vercel
-GitHub app has no access to the Nectarlabs-io org, so deployments are created through the Vercel
-API from the public repo (`gitSource`: Nectarlabs-io/landing at a branch or commit), and a push
-does **not** deploy on its own. To deploy a new commit, create a deployment from it (Vercel API or
-connector, or `vercel deploy` from a checkout). Installing the Vercel GitHub app on Nectarlabs-io
-and connecting the repo would turn on deploy-on-push. Vercel treats the repo's default branch as
-production.
+The repo's `Dockerfile` builds the standalone server and copies `public/`, `.next/static/`,
+`migrations/` and `scripts/` into it. Railway always builds with a root `Dockerfile` when there is
+one.
 
-1. **Project.** Created with framework Next.js; the build command comes from `vercel.json`.
-   `PILOT_NOTIFY_TO` (production and preview) and `SITE_NOINDEX` / `CONTENT_PREVIEW` (preview) are
-   already set.
-2. **Database.** Storage → Create Database → Neon (Marketplace) → connect it to the project. This
-   adds `DATABASE_URL`, `DATABASE_URL_UNPOOLED` and related variables.
-3. **Variables.** Add `IP_HASH_SALT`, `RESEND_API_KEY`, `PILOT_FROM` and `CRON_SECRET` as
-   sensitive production variables (and `IP_HASH_SALT` for preview, with a different value).
-4. **Redeploy** production so the migrations run, then submit the form on the production
-   `*.vercel.app` URL and check the row in Neon and the email.
-5. **Domain.** See [docs/cutover.md](docs/cutover.md): `nectarnetwork.fun` is currently attached to
-   another Vercel project, and moving it switches the live site.
+| Project | Environment | Services | Deploys |
+| --- | --- | --- | --- |
+| nectar-network-staging | staging | `web`, `Postgres` | Automatically on every push to `claude/design-implementation-hmz7s5` |
+| nectar-network | production | `web`, `Postgres`, `indexnow` (cron) | Manually |
+
+**web** (both): pre-deploy command `node scripts/migrate.mjs`, health check `/api/health`, restart on
+failure. Staging also sets `SITE_NOINDEX=true` and `CONTENT_PREVIEW=1`, so drafts can be reviewed at
+its `*.up.railway.app` domain.
+
+**indexnow** (production): the same image with start command `node scripts/indexnow-cron.mjs` and
+cron schedule `17 6 * * *` (daily, UTC). It calls the web service's `/api/indexnow` over the private
+network and exits. The web service submits nothing until `INDEXNOW_ENABLED=true`.
+
+**Production deploys stay manual:** connect the production services to the repo, then turn off
+autodeploy (service Settings → Source → Disable), and use **Deploy Latest Commit** (`Cmd+K`) when
+you want to ship. Turn on the Postgres service's daily backups (Backups tab) if your plan has them.
+
+The move of `nectarnetwork.fun` to Railway is prepared, not done: see [docs/cutover.md](docs/cutover.md).
 
 ### Email (Resend)
 
@@ -198,14 +201,6 @@ Newer Resend domains may show CNAME records instead; use whatever the Records ta
 on the `send` subdomain and `resend._domainkey`, so they don't touch the root MX records that
 deliver mail to kunal@nectarnetwork.fun. After verification, Resend recommends a DMARC record; if
 `_dmarc` already exists, edit it rather than adding a second one.
-
-## Self-hosting (Docker)
-
-The `Dockerfile` builds the standalone server and copies `public/`, `.next/static/`, `migrations/`
-and `scripts/` into the image. Run `node scripts/migrate.mjs` as a pre-deploy step, use
-`/api/health` as the health check, and call `/api/indexnow` daily with
-`Authorization: Bearer $CRON_SECRET` from any scheduler. Build-time variables (`SITE_NOINDEX`,
-`GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`) are declared as `ARG`s.
 
 ## Fonts
 

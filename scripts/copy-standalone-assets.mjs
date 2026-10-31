@@ -6,6 +6,11 @@
  */
 import { cpSync, existsSync } from "node:fs";
 
+if (process.env.VERCEL) {
+  console.log("[postbuild] skipped on Vercel (no standalone output)");
+  process.exit(0);
+}
+
 if (!existsSync(".next/standalone")) {
   console.error("[postbuild] .next/standalone is missing; is output: 'standalone' set?");
   process.exit(1);

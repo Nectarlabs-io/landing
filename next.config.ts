@@ -12,8 +12,9 @@ function isPublished(file: string): boolean {
 }
 
 const nextConfig: NextConfig = {
-  // Self-contained server for the Docker image (see Dockerfile).
-  output: "standalone",
+  // Self-contained server for the Docker image (Railway). Vercel builds its
+  // own output, so it doesn't use standalone.
+  output: process.env.VERCEL ? undefined : "standalone",
   // Routes that run on the server at request time (e.g. an OG image for an
   // unknown page) read Markdown from /content and fonts from src/assets/fonts.
   outputFileTracingIncludes: {

@@ -1,49 +1,7 @@
-/*
- * Wide data table that becomes a stack of label/value cards on phones.
- * Every <td> after the first needs a data-label for its mobile caption.
- */
-
 .wrap {
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-}
-
-/* density presets */
-.roomy {
-  --th-y: 16px;
-  --td-y: 18px;
-  --cell-x: 24px;
-  --edge-x: 24px;
-  --th-tracking: 0.12em;
-}
-
-.standard {
-  --th-y: 14px;
-  --td-y: 18px;
-  --cell-x: 16px;
-  --edge-x: 20px;
-  --th-tracking: 0.1em;
-}
-
-.cozy {
-  --th-y: 14px;
-  --td-y: 16px;
-  --cell-x: 16px;
-  --edge-x: 20px;
-  --th-tracking: 0.1em;
-}
-
-.compact {
-  --th-y: 10px;
-  --td-y: 12px;
-  --cell-x: 16px;
-  --edge-x: 16px;
-  --th-tracking: 0.1em;
-}
-
-.cardsOnBg {
-  --rt-card-bg: var(--bg);
 }
 
 .table {
@@ -53,60 +11,27 @@
 }
 
 .table th {
-  padding: var(--th-y) var(--cell-x);
+  padding: 16px 24px;
   text-align: left;
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: var(--th-tracking);
+  letter-spacing: 0.12em;
   color: var(--dim);
   border-bottom: 1px solid var(--border);
 }
 
 .table td {
-  padding: var(--td-y) var(--cell-x);
+  padding: 18px 24px;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
-}
-
-.table :is(th, td):first-child {
-  padding-left: var(--edge-x);
-}
-
-.table :is(th, td):last-child {
-  padding-right: var(--edge-x);
 }
 
 .table tbody tr:last-child td {
   border-bottom: 0;
 }
 
-.headerBg thead tr {
-  background: var(--surface);
-}
-
-/* cell helpers */
-.num {
-  text-align: right;
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
 .strong {
   color: var(--heading);
-}
-
-.dim {
-  color: var(--dim);
-}
-
-.warn {
-  color: var(--warn);
-}
-
-.accent {
-  color: var(--accent);
 }
 
 @media (max-width: 760px) {
@@ -132,7 +57,7 @@
     display: block;
     margin-bottom: 12px;
     padding: 6px 0;
-    background: var(--rt-card-bg, var(--surface));
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
   }
@@ -142,10 +67,8 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 16px;
-    max-width: none !important;
-    padding: 7px 16px !important;
+    padding: 7px 16px;
     text-align: right;
-    white-space: normal !important;
     border: 0;
   }
 
@@ -160,7 +83,7 @@
 
   .table td:first-child {
     display: block;
-    padding-top: 10px !important;
+    padding-top: 10px;
     text-align: left;
   }
 

@@ -4,8 +4,8 @@ import { cx } from "@/lib/cx";
 
 import styles from "./Badge.module.css";
 
-type Tone = "soon" | "live" | "neutral" | "outline" | "dashed";
-type Size = "xs" | "sm" | "md" | "lg";
+type Tone = "soon" | "neutral";
+type Size = "xs" | "sm";
 
 export function Badge({
   tone = "neutral",
@@ -18,12 +18,7 @@ export function Badge({
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <span className={cx(styles.badge, styles[tone], styles[size], className)}>
-      {tone === "live" && <Dot />}
-      {children}
-    </span>
-  );
+  return <span className={cx(styles.badge, styles[tone], styles[size], className)}>{children}</span>;
 }
 
 /** Small status dot. `pulse` adds the radiating ring animation. */

@@ -33,10 +33,6 @@ export const metadata: Metadata = {
     description: site.description,
     url: site.url,
   },
-  twitter: {
-    card: "summary",
-    site: "@nectar_xlm",
-  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

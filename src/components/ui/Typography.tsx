@@ -4,12 +4,11 @@ import { cx } from "@/lib/cx";
 
 import styles from "./Typography.module.css";
 
-type Tone = "dim" | "accent" | "warn";
+type Tone = "dim" | "accent";
 
 const toneClass: Record<Tone, string | undefined> = {
   dim: undefined,
   accent: styles.accent,
-  warn: styles.warn,
 };
 
 /** Small uppercase line that sits above a section title. */

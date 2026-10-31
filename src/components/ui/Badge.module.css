@@ -18,42 +18,15 @@
   padding: 3px 10px;
 }
 
-.md {
-  font-size: 12px;
-  padding: 3px 10px;
-}
-
-.lg {
-  font-size: 12px;
-  padding: 6px 12px;
-  gap: 8px;
-}
-
 /* tones */
 .soon {
   color: var(--info);
   border-color: var(--info);
 }
 
-.live {
-  color: var(--heading);
-  border-color: var(--accent);
-}
-
 .neutral {
   color: var(--dim);
   border-color: var(--border);
-}
-
-.outline {
-  color: inherit;
-  border-color: var(--border-strong);
-}
-
-.dashed {
-  color: var(--dim);
-  border-style: dashed;
-  border-color: var(--border-strong);
 }
 
 /* status dot */

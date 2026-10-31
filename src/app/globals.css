@@ -1,7 +1,7 @@
 /*
  * Nectar design tokens and global primitives.
  *
- * Themes live on <html data-theme="dark|light">. Dark is the default; the
+ * Themes are set on <html data-theme="dark|light">. Dark is the default; the
  * inline script in the root layout applies a saved preference before paint.
  */
 
@@ -65,7 +65,7 @@
   --grid: rgba(110, 122, 145, 0.07);
 }
 
-/* ---------------------------------------------------------------- base */
+/* --------------------------------------------------------------- reset */
 
 html {
   -webkit-text-size-adjust: 100%;

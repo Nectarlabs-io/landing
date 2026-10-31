@@ -17,10 +17,6 @@
   color: var(--accent);
 }
 
-.warn {
-  color: var(--warn);
-}
-
 .head {
   display: flex;
   flex-direction: column;

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 const NEXT_STEPS = [
-  { title: `We reply within ${site.replyWindow}.`, text: "A real person, not a sequence." },
+  { title: "We reply by email.", text: "A real person, not a sequence." },
   {
     title: "A 30-minute call.",
     text: "Your markets, your chains, what a bad day looks like.",
@@ -74,9 +74,6 @@ export default function ContactPage() {
                 <Kicker as="h2">RATHER WRITE DIRECTLY?</Kicker>
                 <a href={`mailto:${site.contactEmail}`} className={styles.directLink}>
                   {site.contactEmail}
-                </a>
-                <a href={site.xUrl} className={styles.directLink}>
-                  Nectar on X
                 </a>
               </Card>
             </aside>

@@ -43,7 +43,7 @@ export function Collateral() {
         eyebrow="COLLATERAL"
         title="Built once per collateral class. Shipped wherever it's listed."
       />
-      <DataTable minWidth={760} density="roomy" aria-labelledby="coll-h">
+      <DataTable minWidth={760} aria-labelledby="coll-h">
         <thead>
           <tr>
             <th scope="col">CLASS</th>

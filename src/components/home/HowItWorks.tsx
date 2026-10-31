@@ -15,8 +15,7 @@ export function HowItWorks() {
       />
       <ArchitectureDiagram />
       <p className={styles.footnote}>
-        Nectar Keepers and Nectar Reserve run on testnet today. Pappus, Macaulay, Nectar Route and
-        Nectar Feed are coming soon.
+        Every part of this flow is in development. Pilot partners see it first.
       </p>
     </Section>
   );

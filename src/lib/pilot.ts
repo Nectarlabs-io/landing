@@ -1,6 +1,6 @@
 /*
- * Pilot-cohort contact form: options, validation and parsing shared by the
- * form (client) and the /api/pilot route handler (server).
+ * Pilot-cohort form: options, limits and validation shared by the form
+ * (client) and POST /api/pilot (server). Keep this module free of Node APIs.
  */
 
 export const PILOT_ROLES = [
@@ -25,29 +25,63 @@ export const CAPACITY_OPTIONS = [
 
 export type CapacityRange = (typeof CAPACITY_OPTIONS)[number]["value"];
 
+/** Maximum characters per field. */
+export const MAX_FIELD_LENGTH = 200;
+export const MAX_MESSAGE_LENGTH = 4000;
+
+/** Submissions sent sooner than this after the form loaded are treated as bots. */
+export const MIN_FILL_TIME_MS = 3000;
+
+/** Hidden form field: people leave it empty, form-filling bots don't. */
+export const HONEYPOT_FIELD = "website";
+
+/** `error` values returned by POST /api/pilot. */
+export type PilotErrorCode =
+  | "invalid_json"
+  | "too_fast"
+  | "invalid"
+  | "rate_limited"
+  | "unavailable";
+
 export type PilotRequest = {
   role: PilotRole | null;
   chains: string;
   name: string;
   email: string;
-  org: string;
+  organisation: string;
   handle: string;
   markets: string;
   capacity: CapacityRange;
   message: string;
 };
 
+export type PilotTextField = Exclude<keyof PilotRequest, "role" | "capacity">;
+
 export const EMPTY_PILOT_REQUEST: PilotRequest = {
   role: null,
   chains: "",
   name: "",
   email: "",
-  org: "",
+  organisation: "",
   handle: "",
   markets: "",
   capacity: "",
   message: "",
 };
+
+const FIELD_LABELS: Record<PilotTextField, string> = {
+  chains: "Chains",
+  name: "Name",
+  email: "Work email",
+  organisation: "Organisation",
+  handle: "Telegram or X",
+  markets: "Markets or collateral",
+  message: "Anything else",
+};
+
+export function maxLengthFor(field: PilotTextField): number {
+  return field === "message" ? MAX_MESSAGE_LENGTH : MAX_FIELD_LENGTH;
+}
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -61,7 +95,7 @@ export function missingPilotFields(request: PilotRequest): string[] {
   if (!request.role) missing.push("what you do");
   if (!request.name.trim()) missing.push("your name");
   if (!isValidEmail(request.email)) missing.push("a work email");
-  if (!request.org.trim()) missing.push("your organisation");
+  if (!request.organisation.trim()) missing.push("your organisation");
   return missing;
 }
 
@@ -78,33 +112,58 @@ export function roleLabel(role: PilotRole | null): string {
   return PILOT_ROLES.find((option) => option.id === role)?.label ?? "—";
 }
 
-const MAX_SHORT = 200;
-const MAX_LONG = 4000;
+export type ValidationResult =
+  | { ok: true; data: PilotRequest }
+  | { ok: false; error: string };
 
-/** Coerce, trim and bound an untrusted request body. */
-export function parsePilotRequest(
-  body: unknown,
-): { ok: true; data: PilotRequest } | { ok: false; error: string } {
-  if (typeof body !== "object" || body === null) {
+/**
+ * Validate an untrusted body. Strings are trimmed; anything over its length
+ * cap, an unknown role or an unknown capacity range is rejected, not fixed up.
+ */
+export function validatePilotRequest(body: unknown): ValidationResult {
+  if (typeof body !== "object" || body === null || Array.isArray(body)) {
     return { ok: false, error: "Expected a JSON object." };
   }
-
   const input = body as Record<string, unknown>;
-  const text = (key: keyof PilotRequest, max = MAX_SHORT) => {
-    const value = input[key];
-    return typeof value === "string" ? value.trim().slice(0, max) : "";
-  };
+
+  const text: Partial<Record<PilotTextField, string>> = {};
+  for (const field of Object.keys(FIELD_LABELS) as PilotTextField[]) {
+    const raw = input[field];
+    if (raw != null && typeof raw !== "string") {
+      return { ok: false, error: `${FIELD_LABELS[field]} must be text.` };
+    }
+    const value = (raw ?? "").trim();
+    if (value.length > maxLengthFor(field)) {
+      return {
+        ok: false,
+        error: `Keep "${FIELD_LABELS[field]}" under ${maxLengthFor(field).toLocaleString("en-US")} characters.`,
+      };
+    }
+    text[field] = value;
+  }
+
+  const roleInput = input.role;
+  const role = PILOT_ROLES.find((option) => option.id === roleInput)?.id ?? null;
+  if (roleInput != null && roleInput !== "" && role === null) {
+    return { ok: false, error: "Pick one of the listed roles." };
+  }
+
+  const capacityInput = input.capacity ?? "";
+  const capacity = CAPACITY_OPTIONS.find((option) => option.value === capacityInput)?.value;
+  if (capacity === undefined) {
+    return { ok: false, error: "Pick one of the listed capacity ranges." };
+  }
 
   const data: PilotRequest = {
-    role: PILOT_ROLES.find((option) => option.id === input.role)?.id ?? null,
-    chains: text("chains"),
-    name: text("name"),
-    email: text("email"),
-    org: text("org"),
-    handle: text("handle"),
-    markets: text("markets"),
-    capacity: CAPACITY_OPTIONS.find((option) => option.value === input.capacity)?.value ?? "",
-    message: text("message", MAX_LONG),
+    role,
+    chains: text.chains ?? "",
+    name: text.name ?? "",
+    email: text.email ?? "",
+    organisation: text.organisation ?? "",
+    handle: text.handle ?? "",
+    markets: text.markets ?? "",
+    capacity,
+    message: text.message ?? "",
   };
 
   const missing = missingPilotFields(data);

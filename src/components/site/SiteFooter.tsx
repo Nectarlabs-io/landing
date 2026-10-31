@@ -40,8 +40,8 @@ const COLUMNS = [
     links: [
       { label: "Pilot cohort", href: "/#pilot" },
       { label: "Talk to us", href: routes.contact },
+      { label: site.contactEmail, href: `mailto:${site.contactEmail}` },
       { label: "Media kit", href: site.mediaKitUrl },
-      { label: "X", href: site.xUrl },
     ],
   },
 ];

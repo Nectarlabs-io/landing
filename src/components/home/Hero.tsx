@@ -43,7 +43,7 @@ export function Hero() {
           </div>
           <p className={cx(styles.statusLine, "rise")} style={delay(0.65)}>
             <Dot pulse />
-            Running on testnet with a pilot cohort
+            In development · pilot cohort forming
           </p>
         </div>
 
@@ -114,8 +114,8 @@ function ExitCapacityCard() {
       </div>
 
       <p className={styles.cardNote}>
-        Nectar fills the gap with funded quotes held in USDC escrow. Nectar Feed, the live
-        version of this card, is coming soon.
+        Nectar fills the gap with funded quotes held in USDC escrow. Nectar Feed will publish this
+        for every market it covers. Coming soon.
       </p>
     </Card>
   );

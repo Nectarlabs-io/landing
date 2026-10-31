@@ -4,13 +4,11 @@ import { cx } from "@/lib/cx";
 
 import styles from "./Card.module.css";
 
-type Tone = "plain" | "surface" | "bg" | "accent" | "warn";
+type Tone = "plain" | "surface" | "bg";
 
 type CardProps = HTMLAttributes<HTMLElement> & {
   as?: ElementType;
   tone?: Tone;
-  /** Use the stronger border colour. */
-  strong?: boolean;
   /** CSS padding shorthand, e.g. "28px" or "20px 24px". */
   padding?: string;
   /** Vertical gap between children, in px. */
@@ -22,7 +20,6 @@ type CardProps = HTMLAttributes<HTMLElement> & {
 export function Card({
   as: Tag = "div",
   tone = "surface",
-  strong = false,
   padding,
   gap,
   compactOnMobile = false,
@@ -38,13 +35,7 @@ export function Card({
 
   return (
     <Tag
-      className={cx(
-        styles.card,
-        styles[tone],
-        strong && styles.strong,
-        compactOnMobile && styles.compact,
-        className,
-      )}
+      className={cx(styles.card, styles[tone], compactOnMobile && styles.compact, className)}
       style={vars}
       {...rest}
     />

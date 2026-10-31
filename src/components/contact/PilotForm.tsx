@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 
 import { Button, ButtonLink } from "@/components/ui/Button";
 import form from "@/components/ui/form.module.css";
@@ -10,43 +17,69 @@ import { cx } from "@/lib/cx";
 import {
   CAPACITY_OPTIONS,
   EMPTY_PILOT_REQUEST,
+  HONEYPOT_FIELD,
   PILOT_ROLES,
   describeMissing,
   isValidEmail,
+  maxLengthFor,
   missingPilotFields,
   roleLabel,
+  type PilotErrorCode,
   type PilotRequest,
+  type PilotTextField,
 } from "@/lib/pilot";
 import { routes, site } from "@/lib/site";
 
 import styles from "./Contact.module.css";
 
 type Status = "editing" | "sending" | "sent";
-type TextField = Exclude<keyof PilotRequest, "role">;
+
+const emailUs = (
+  <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+);
+
+/** What to show for each failure the API can report. */
+function errorMessage(code: PilotErrorCode | null, serverMessage?: string): ReactNode {
+  switch (code) {
+    case "invalid":
+      return serverMessage ?? "Check the form and send again.";
+    case "too_fast":
+      return "That was quick. Check your details, then send again.";
+    case "rate_limited":
+      return <>We&apos;ve had several requests from your network in the last hour. Email us instead at {emailUs}.</>;
+    default:
+      return <>We couldn&apos;t send that just now. Email us instead at {emailUs}.</>;
+  }
+}
 
 export function PilotForm() {
   const [values, setValues] = useState<PilotRequest>(EMPTY_PILOT_REQUEST);
   const [status, setStatus] = useState<Status>("editing");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<ReactNode>(null);
   const [attempted, setAttempted] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const loadedAt = useRef(0);
   const successHeading = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    loadedAt.current = performance.now();
+  }, []);
 
   useEffect(() => {
     if (status === "sent") successHeading.current?.focus();
   }, [status]);
 
-  const bind = (key: TextField) => ({
+  const bind = (key: PilotTextField | "capacity") => ({
     value: values[key],
-    onChange: (
-      event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-    ) => setValues((current) => ({ ...current, [key]: event.target.value })),
+    maxLength: key === "capacity" ? undefined : maxLengthFor(key),
+    onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      setValues((current) => ({ ...current, [key]: event.target.value })),
   });
 
   const invalid = {
     name: attempted && !values.name.trim(),
     email: attempted && !isValidEmail(values.email),
-    org: attempted && !values.org.trim(),
+    organisation: attempted && !values.organisation.trim(),
   };
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -60,25 +93,37 @@ export function PilotForm() {
     }
 
     setStatus("sending");
-    setError("");
+    setError(null);
     try {
       const response = await fetch("/api/pilot", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...values, website: honeypot }),
+        body: JSON.stringify({
+          ...values,
+          [HONEYPOT_FIELD]: honeypot,
+          elapsedMs: Math.round(performance.now() - loadedAt.current),
+        }),
       });
-      if (!response.ok) throw new Error(`Request failed with ${response.status}`);
-      setStatus("sent");
+      if (response.ok) {
+        setStatus("sent");
+        return;
+      }
+      const payload = (await response.json().catch(() => null)) as {
+        error?: PilotErrorCode;
+        message?: string;
+      } | null;
+      setStatus("editing");
+      setError(errorMessage(payload?.error ?? null, payload?.message));
     } catch {
       setStatus("editing");
-      setError(`We couldn't send that just now. Try again, or write to us at ${site.contactEmail}.`);
+      setError(errorMessage(null));
     }
   }
 
   function reset() {
     setValues(EMPTY_PILOT_REQUEST);
     setAttempted(false);
-    setError("");
+    setError(null);
     setStatus("editing");
   }
 
@@ -91,8 +136,8 @@ export function PilotForm() {
           Thanks, {firstName}. We&apos;ve got it.
         </h2>
         <p className={cx(styles.successText, "rise")} style={{ animationDelay: "0.1s" }}>
-          We&apos;ll reply to {values.email.trim()} within {site.replyWindow} to set up a short call.
-          For curators and protocols, the next step is a depth study of the markets you named.
+          We&apos;ll reply to {values.email.trim()} to set up a short call. For curators and
+          protocols, the next step is a depth study of the markets you named.
         </p>
         <dl className={cx(styles.summary, "rise")} style={{ animationDelay: "0.2s" }}>
           <dt>Role</dt>
@@ -126,11 +171,10 @@ export function PilotForm() {
           {PILOT_ROLES.map((role) => (
             <ToggleButton
               key={role.id}
-              shape="optionTight"
               pressed={values.role === role.id}
               onClick={() => {
                 setValues((current) => ({ ...current, role: role.id }));
-                setError("");
+                setError(null);
               }}
             >
               {role.label}
@@ -186,8 +230,8 @@ export function PilotForm() {
             type="text"
             autoComplete="organization"
             required
-            aria-invalid={invalid.org || undefined}
-            {...bind("org")}
+            aria-invalid={invalid.organisation || undefined}
+            {...bind("organisation")}
           />
         </div>
         <div className={form.field}>
@@ -243,11 +287,12 @@ export function PilotForm() {
         />
       </div>
 
-      {/* Hidden from people; bots that fill every field get filtered out server-side. */}
+      {/* Hidden from people; the server drops submissions that fill it in. */}
       <div className="sr-only" aria-hidden="true">
         <label htmlFor="c-website">Leave this field empty</label>
         <input
           id="c-website"
+          name={HONEYPOT_FIELD}
           type="text"
           tabIndex={-1}
           autoComplete="off"

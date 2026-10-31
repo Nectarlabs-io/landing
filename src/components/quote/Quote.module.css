@@ -1,0 +1,190 @@
+.back {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+}
+
+.step {
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.stepReached {
+  color: var(--heading);
+  border-color: var(--accent);
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.form {
+  display: flex;
+  flex: 999 1 560px;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  margin: 0;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.fieldsetTight {
+  gap: 16px;
+}
+
+.legend {
+  padding: 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  gap: 12px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fact dt {
+  color: var(--dim);
+}
+
+.fact dd {
+  margin: 0;
+  color: var(--heading);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.rowEnd {
+  align-items: flex-end;
+}
+
+.grow {
+  flex: 1 1 220px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.check {
+  display: flex;
+  flex: 1 1 220px;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  font-size: 13px;
+  color: var(--heading);
+  cursor: pointer;
+}
+
+/* Summary --------------------------------------------------------------- */
+
+.aside {
+  display: flex;
+  flex: 1 1 380px;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.priceValue {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--heading);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 10px 16px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.summary dt {
+  color: var(--dim);
+}
+
+.summary dd {
+  margin: 0;
+  text-align: right;
+  color: var(--heading);
+}
+
+.summary .escrow {
+  color: var(--accent);
+}
+
+.ctaNote {
+  font-size: 12px;
+  text-align: center;
+  color: var(--dim);
+}
+
+.carry {
+  font-size: 13px;
+  color: var(--heading);
+}
+
+@media (max-width: 760px) {
+  .fieldset {
+    padding: 20px 16px;
+  }
+}

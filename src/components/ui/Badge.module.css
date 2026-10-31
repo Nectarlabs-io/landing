@@ -1,0 +1,71 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+/* sizes */
+.xs {
+  font-size: 11px;
+  padding: 2px 9px;
+}
+
+.sm {
+  font-size: 11px;
+  padding: 3px 10px;
+}
+
+.md {
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.lg {
+  font-size: 12px;
+  padding: 6px 12px;
+  gap: 8px;
+}
+
+/* tones */
+.soon {
+  color: var(--info);
+  border-color: var(--info);
+}
+
+.live {
+  color: var(--heading);
+  border-color: var(--accent);
+}
+
+.neutral {
+  color: var(--dim);
+  border-color: var(--border);
+}
+
+.outline {
+  color: inherit;
+  border-color: var(--border-strong);
+}
+
+.dashed {
+  color: var(--dim);
+  border-style: dashed;
+  border-color: var(--border-strong);
+}
+
+/* status dot */
+.dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+.dotWarn {
+  background: var(--warn);
+}

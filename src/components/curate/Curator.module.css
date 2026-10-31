@@ -1,0 +1,275 @@
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Market picker --------------------------------------------------------- */
+
+.markets {
+  display: flex;
+  flex: 1 1 340px;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.marketsTitle {
+  margin-bottom: 4px;
+}
+
+.market {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 44px;
+  padding: 16px 18px;
+  font-family: inherit;
+  text-align: left;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.market:hover {
+  border-color: var(--border-strong);
+}
+
+.market[aria-pressed="true"] {
+  background: var(--accent-fill);
+  border-color: var(--accent);
+}
+
+.marketName {
+  font-size: 14px;
+  color: var(--heading);
+}
+
+.marketMeta {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.marketsNote {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* Sizing panel ---------------------------------------------------------- */
+
+.panel {
+  flex: 999 1 640px;
+  min-width: 0;
+}
+
+.panelHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.panelTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--heading);
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.panel .figures {
+  border-radius: var(--radius-sm);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--surface);
+}
+
+.figure dt {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+}
+
+.figure dd {
+  margin: 0;
+  font-size: 16px;
+  color: var(--heading);
+}
+
+.figure .accent {
+  color: var(--accent);
+}
+
+.figure .warn {
+  color: var(--warn);
+}
+
+.sizing {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.requestRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.requestField {
+  flex: 1 1 220px;
+}
+
+.result {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resultValue {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--heading);
+}
+
+.barBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar {
+  display: flex;
+  height: 12px;
+  overflow: hidden;
+  background: var(--warn-bar);
+  border-radius: var(--radius-sm);
+}
+
+.barDepth {
+  height: 12px;
+  background: var(--accent);
+}
+
+.barRequest {
+  height: 12px;
+  background: var(--accent-deep);
+}
+
+.tail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note {
+  margin: 0;
+  font-size: 13px;
+}
+
+.noteDim {
+  color: var(--dim);
+}
+
+.feeRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.fee {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.feeValue {
+  font-size: 18px;
+  color: var(--heading);
+}
+
+.feeNote {
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.unmeasured {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.unmeasured > a {
+  align-self: flex-start;
+}
+
+.unmeasuredTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--heading);
+}
+
+/* Feature cards --------------------------------------------------------- */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
+}
+
+.featureHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.featureTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--heading);
+}
+
+.featureText {
+  font-size: 13px;
+}
+
+.featureLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+}

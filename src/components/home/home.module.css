@@ -1,0 +1,513 @@
+/* ------------------------------------------------------------ sections */
+
+.section {
+  padding: 96px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.innerTight {
+  gap: 40px;
+}
+
+.split {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+}
+
+.lead {
+  margin: 0;
+}
+
+.footnote {
+  margin: 0;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.hex {
+  color: var(--accent);
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.display {
+  font-family: var(--font-heading);
+  color: var(--heading);
+}
+
+/* ---------------------------------------------------------------- hero */
+
+.hero {
+  padding: 96px 24px 104px;
+}
+
+.heroCopy {
+  display: flex;
+  flex: 999 1 520px;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(46px, 7vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: var(--heading);
+}
+
+.heroWord {
+  display: inline-block;
+}
+
+.heroLead {
+  max-width: 560px;
+  margin: 0;
+  font-size: 16px;
+}
+
+.statusLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+
+.capacityCard {
+  flex: 1 1 400px;
+  min-width: 0;
+  max-width: 480px;
+}
+
+.cardHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pairName {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--heading);
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.meters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meterLabel {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.meterValue {
+  color: var(--heading);
+}
+
+.meterValueWarn {
+  color: var(--warn);
+}
+
+.track {
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+
+.fill {
+  height: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.pending {
+  box-sizing: border-box;
+  height: 8px;
+  border: 1px dashed var(--warn);
+  border-radius: var(--radius-sm);
+}
+
+.gapRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.gapValue {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  color: var(--warn);
+}
+
+.cardNote {
+  margin: 0;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* ------------------------------------------------------------- problem */
+
+.statCell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+  background: var(--bg);
+}
+
+.statValue {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--heading);
+}
+
+.statText {
+  font-size: 13px;
+}
+
+.statSource {
+  margin-top: auto;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+/* --------------------------------------------------------------- pilot */
+
+.pilotCopy {
+  display: flex;
+  flex: 999 1 520px;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.perks {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.perk {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.perk:last-child {
+  background: transparent;
+  border-bottom: 0;
+}
+
+.perkTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--heading);
+}
+
+.perkTitleMuted {
+  color: var(--dim);
+}
+
+.perkHex {
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.perkText {
+  font-size: 13px;
+}
+
+.art {
+  flex: 1 1 400px;
+  min-width: 0;
+  max-width: 560px;
+  margin: 0 auto;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse closest-side, #000 55%, transparent 100%);
+}
+
+.artImage {
+  display: block;
+  width: 170%;
+  max-width: none;
+  height: auto;
+  margin: -26.25% 0 0 -35%;
+}
+
+/* ---------------------------------------------------------- audiences */
+
+.cards3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 16px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.15;
+  color: var(--heading);
+}
+
+.cardBody {
+  margin: 0;
+  font-size: 14px;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+
+.points li {
+  display: flex;
+  gap: 10px;
+}
+
+.pushDown {
+  margin-top: auto;
+}
+
+/* ---------------------------------------------------------- protocols */
+
+.cards2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: 16px;
+}
+
+.protocolHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.protocolName {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: 0.04em;
+  color: var(--heading);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 20px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.facts dt {
+  color: var(--dim);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.etymology {
+  margin: 0;
+  padding-top: 16px;
+  font-size: 12px;
+  color: var(--dim);
+  border-top: 1px solid var(--border);
+}
+
+/* ----------------------------------------------------------- products */
+
+.productCell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+  background: var(--bg);
+}
+
+.productHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.productName {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--heading);
+}
+
+.productText {
+  font-size: 13px;
+}
+
+/* ----------------------------------------------------------- security */
+
+.cards4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 16px;
+}
+
+.smallTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--heading);
+}
+
+.smallText {
+  font-size: 13px;
+}
+
+.auditStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--warn);
+}
+
+/* ------------------------------------------------------------ closing */
+
+.closing {
+  padding: 120px 24px;
+}
+
+.closingInner {
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+
+.closingTitle {
+  max-width: 860px;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+
+.closingLead {
+  max-width: 560px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.closingActions {
+  justify-content: center;
+}
+
+.closingTagline {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+
+/* -------------------------------------------------------------- phone */
+
+@media (max-width: 760px) {
+  .section,
+  .hero,
+  .closing {
+    padding: 56px 16px;
+  }
+
+  .perk {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

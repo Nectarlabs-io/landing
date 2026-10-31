@@ -1,0 +1,110 @@
+.footer {
+  padding: 64px 24px 40px;
+  border-top: 1px solid var(--border);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 64px;
+}
+
+.brandCol {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tagline {
+  max-width: 280px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.column {
+  display: flex;
+  flex: 0 1 160px;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.columnTitle {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+}
+
+.columnLink {
+  color: var(--text);
+}
+
+.columnLink:hover {
+  color: var(--heading);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 24px;
+  font-size: 12px;
+  color: var(--dim);
+  border-top: 1px solid var(--border);
+}
+
+/* Compact footer used on the contact page. */
+.mini {
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.miniInner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.miniLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.miniLink {
+  color: var(--dim);
+}
+
+.miniLink:hover {
+  color: var(--heading);
+}
+
+@media (max-width: 760px) {
+  .footer,
+  .mini {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

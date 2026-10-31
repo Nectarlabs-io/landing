@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap, 16px);
+  padding: var(--card-pad, 28px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.plain {
+  background: transparent;
+}
+
+.surface {
+  background: var(--surface);
+}
+
+.bg {
+  background: var(--bg);
+}
+
+.accent {
+  background: var(--accent-fill);
+  border-color: var(--accent);
+}
+
+.warn {
+  background: var(--warn-fill);
+  border-color: var(--warn);
+}
+
+.strong {
+  border-color: var(--border-strong);
+}
+
+@media (max-width: 760px) {
+  .compact {
+    padding: 20px 16px;
+  }
+}

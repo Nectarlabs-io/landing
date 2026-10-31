@@ -1,0 +1,24 @@
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  padding: 10px 24px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .bar {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

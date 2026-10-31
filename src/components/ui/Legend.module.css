@@ -1,0 +1,18 @@
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 14px;
+  height: 6px;
+  border-radius: var(--radius-sm);
+}

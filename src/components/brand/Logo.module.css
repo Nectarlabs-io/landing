@@ -1,0 +1,32 @@
+.mark {
+  flex: 0 0 auto;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--wordmark);
+}
+
+.nameLg {
+  font-size: 17px;
+}
+
+.nameSm {
+  font-size: 15px;
+}
+
+.sub {
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  color: var(--dim);
+}

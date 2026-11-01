@@ -6,7 +6,7 @@ description: "On Oct 25, 2026, Morpho's cirBTC/USDC market held $274.0M of cirBT
 type: article
 status: draft
 eyebrow: RESEARCH
-updated: 2026-10-31
+updated: 2026-11-01
 related:
   - /learn/what-is-exit-capacity
   - /learn/dex-depth-and-collateral-caps
@@ -19,12 +19,15 @@ On Oct 25, 2026, the cirBTC/USDC market on Morpho held $274.0M of cirBTC collate
 
 | Measure | Value | Date | Source |
 | --- | --- | --- | --- |
-| Collateral at stake in cirBTC/USDC | $274.0M | Oct 25, 2026 | Morpho API |
+| Collateral at stake in cirBTC/USDC | $274.0M (3,405.96 cirBTC) | Oct 25, 2026 | Morpho API |
+| Borrowed in cirBTC/USDC | $178.4M | Oct 25, 2026 | Morpho API |
 | DEX liquidity for cirBTC | ≈ $23.9M | Oct 25, 2026 | Observed by Nectar |
 | Market LLTV | 86% | Oct 25, 2026 | Morpho market parameters |
 | Committed bids | None yet | Oct 25, 2026 | First buyers join in the pilot |
 
-<!-- REVIEW: Re-pull on Oct 31, 2026 (onchain, via Blockscout and read-only RPC) couldn't reproduce these figures, so the page still shows the Oct 25 Morpho API snapshot and the home page is unchanged. What was found: (1) the cirBTC/USDC Morpho market doesn't appear to be on the chain where the largest cirBTC Uniswap V3 pools are; the cirBTC there has never been sent to Morpho. The market looks to be on another chain, where a contract named "Morpho" holds 3,414.29 cirBTC (≈ $264.5M at $77,466; may include other cirBTC markets). Its market ID, LLTV, oracle and the $178.4M borrowed couldn't be read: the RPC tool doesn't support that chain and the Blockscout free quota ran out. (2) The largest cirBTC Uniswap V3 pool found, WBTC/cirBTC 0.01% (0xcceef8a17d01e0097bd1ab51687754c86456363b), held about $23.1M at 15:59 UTC (111.41 WBTC + 186.36 cirBTC), close to the $23.9M figure, but it's on a different chain from the market, so it may not be the depth liquidators of this market can reach. The Uniswap V3 pool on the market's chain (0x82916bee18fCEF517B26C72d7Cb5F13694E1dB41) held 70.92 cirBTC; its other side wasn't read. Please send the Morpho market ID and the pool address the $23.9M figure came from, or allow api.morpho.org in the session's network settings, so both can be re-pulled and cited. -->
+The market's Morpho ID is `0xc2db905f174e5defcce01d321b09f15f78856a36a21b90cc7e1abbc29225815d`. Its collateral moved with the cirBTC price during the day: Morpho's hourly values for Oct 25 run from $272.9M to $275.3M, and the figure used here, $274.0M, is the 12:00 UTC value. Borrowing stayed at about $178.4M all day.
+
+<!-- REVIEW: Collateral, borrowing and LLTV were re-pulled from the Morpho API on Nov 1, 2026 (market 0xc2db…815d, historicalState at HOUR interval, Oct 25 00:00 to 24:00 UTC) and match the figures above, so the home page is unchanged. Still open: the ≈ $23.9M DEX figure has no cited pool. The largest cirBTC Uniswap V3 pool found, WBTC/cirBTC 0.01% (0xcceef8a17d01e0097bd1ab51687754c86456363b), held about $23.1M on Oct 31, but it's on a different chain from this market, so its liquidators may not reach it directly. The Uniswap V3 pool on the market's own chain (0x82916bee18fCEF517B26C72d7Cb5F13694E1dB41) held 70.92 cirBTC on Oct 31; its other side wasn't read. Send the pool address(es) the $23.9M came from, or decide how to describe DEX liquidity that sits on another chain. -->
 
 ## What was derived?
 
@@ -54,4 +57,4 @@ That's the situation curators face when they set a [supply cap](/learn/glossary#
 
 The same snapshot appears on the home page, in the exit capacity card and the first problem statistic. This page is their source note.
 
-<!-- REVIEW: The internal app screens (kept on the app-preview branch) had more figures for this market: $178.4M borrowed, and how much collateral becomes liquidatable at 10%, 15%, 20% and 30% price falls. They aren't on the public site, so they're left out here. Add them if you can share the primary source and method. -->
+<!-- REVIEW: The internal app screens (kept on the app-preview branch) also showed how much collateral becomes liquidatable at 10%, 15%, 20% and 30% price falls. They're still left out: the Morpho figures above are market totals, not per-position thresholds. Add them if you can share the source and method. -->

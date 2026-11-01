@@ -64,12 +64,14 @@ in place (it keeps other subdomains on Vercel).
    - Production variables on the Railway `web` service in **nectar-network**: `IP_HASH_SALT`,
      `RESEND_API_KEY`, `PILOT_FROM`, `CRON_SECRET` (you set these; `DATABASE_URL`,
      `PILOT_NOTIFY_TO` and `PORT` are already set).
-   - Connect the production `web` and `indexnow` services to Nectarlabs-io/landing (branch
-     `claude/design-implementation-hmz7s5`), then **Disable** autodeploy on both, and deploy the
-     commit you want with **Deploy Latest Commit**.
-   - Check it on `https://web-production-2de65.up.railway.app`: `/`, `/contact` (submit the form;
-     the row appears in the production Postgres and the email arrives), `/api/health`,
-     `/media-kit`, `/features` → 301.
+   - Done Nov 1: the production `web` and `indexnow` services are connected to
+     Nectarlabs-io/landing and pinned to commit `a84622d`, so pushes don't deploy them. To ship a
+     newer commit, pin both services to it (connect the source again with that commit).
+   - Checked Nov 1 on `https://web-production-2de65.up.railway.app`: `/`, `/contact`,
+     `/media-kit`, `/api/health` and `/robots.txt` return 200 with `X-Robots-Tag: noindex`;
+     `/features` → 301 to `/#how`; migrations 001 to 003 ran in the pre-deploy step.
+   - Still to check once the variables above are set: submit the form on `/contact`; the row
+     appears in the production Postgres and the email arrives.
 2. **Add the custom domains in Railway.** Production `web` → Settings → Public Networking →
    `+ Custom Domain` → `nectarnetwork.fun` (target port 3000), then again for
    `www.nectarnetwork.fun`. Copy the CNAME target and the TXT record shown for each.

@@ -169,7 +169,7 @@ one.
 
 | Project | Environment | Services | Deploys |
 | --- | --- | --- | --- |
-| nectar-network-staging | staging | `web`, `Postgres` | Automatically on every push to `claude/design-implementation-hmz7s5` |
+| nectar-network-staging | staging | `web`, `Postgres` | Automatically on every push to `claude/design-implementation-hmz7s5` (needs Railway's GitHub app on the Nectarlabs-io org) |
 | nectar-network | production | `web`, `Postgres`, `indexnow` (cron) | Manually |
 
 **web** (both): pre-deploy command `node scripts/migrate.mjs`, health check `/api/health`, restart on
@@ -180,9 +180,10 @@ its `*.up.railway.app` domain.
 cron schedule `17 6 * * *` (daily, UTC). It calls the web service's `/api/indexnow` over the private
 network and exits. The web service submits nothing until `INDEXNOW_ENABLED=true`.
 
-**Production deploys stay manual:** connect the production services to the repo, then turn off
-autodeploy (service Settings → Source → Disable), and use **Deploy Latest Commit** (`Cmd+K`) when
-you want to ship. Turn on the Postgres service's daily backups (Backups tab) if your plan has them.
+**Production deploys stay manual:** the production `web` and `indexnow` services are pinned to one
+commit, so pushes to the branch don't deploy them. To ship, pin both to the new commit (connect the
+source again with that commit SHA). Turn on the Postgres service's daily backups (Backups tab) if
+your plan has them.
 
 The move of `nectarnetwork.fun` to Railway is prepared, not done: see [docs/cutover.md](docs/cutover.md).
 
